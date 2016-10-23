@@ -25,5 +25,7 @@ namespace Utility
 		public static bool TapAnyUGUI { get { return _input.TapAnyUGUI; } }
 
 		public static Vector2 TapPosition { get { return _input.TapPosition; } }
+
+		public static Vector2 TapPosition01 { get { return _input.TapPosition01; } }
 	}
 }

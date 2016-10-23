@@ -9,5 +9,6 @@ namespace Utility
 		bool TapUp { get; }
 		bool TapAnyUGUI { get; }
 		Vector2 TapPosition { get; }
+		Vector2 TapPosition01 { get; }
 	}
 }

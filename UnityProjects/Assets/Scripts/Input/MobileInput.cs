@@ -49,6 +49,15 @@ namespace Utility
 			}
 		}
 
+		public Vector2 TapPosition01
+		{
+			get
+			{
+				Vector2 p = TapPosition;
+				return new Vector2(p.x / Screen.width, p.y / Screen.height);
+			}
+		}
+
 		private static bool IsValidTouchCount(int count)
 		{
 			return count <= UnityEngine.Input.touchCount;

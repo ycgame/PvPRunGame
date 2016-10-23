@@ -44,5 +44,14 @@ namespace Utility
 				return UnityEngine.Input.mousePosition;
 			}
 		}
+
+		public Vector2 TapPosition01
+		{
+			get
+			{
+				Vector2 p = TapPosition;
+				return new Vector2(p.x / Screen.width, p.y / Screen.height);
+			}
+		}
 	}
 }
