@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DG.Tweening;
 
 public class TileManager : MonoBehaviour
 {
@@ -71,7 +72,8 @@ public class TileManager : MonoBehaviour
 			}
 			else
 			{
-				transform.position -= _tileHeight * Vector3.up;
+				transform.DOMoveY(-1 * _currentIndex * _tileHeight, 0.05f).SetEase(Ease.Linear);
+				//transform.position -= _tileHeight * Vector3.up;
 				result.x = -_tileWidth * ((float)_width / 2 - 0.5f) + _tileWidth * correct;
 				result.type = TapResult.Type.Success;
 			}
