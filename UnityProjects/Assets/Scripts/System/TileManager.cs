@@ -56,6 +56,13 @@ public class TileManager : MonoBehaviour
 		CreateTiles();
 	}
 
+	public void Initialize(int w, int[] indexes)
+	{
+		_width = w;
+		_correctIndexes = indexes;
+		CreateTiles();
+	}
+
 	public TapResult OnTapTile(Vector2 tapPos)
 	{
 		int correct = _correctIndexes[_currentIndex];

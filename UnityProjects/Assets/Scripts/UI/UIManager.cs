@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
+	[SerializeField]
+	GameManager _gameManager;
 
-	// Use this for initialization
-	void Start () {
-	
+	void Awake()
+	{
+		Utility.Input.Initialize();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	void Start()
+	{
+		_gameManager.StartAI();
 	}
 }

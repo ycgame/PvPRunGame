@@ -1,22 +1,50 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
 	[SerializeField]
     Transform _player;
+    Transform _opponent;
+    bool _isNetwork;
+    bool _isPlaying;
 
     TileManager _tileManager;
 
     void Awake()
     {
-		Utility.Input.Initialize();
 		_tileManager = GetComponentInChildren<TileManager>();
-		_tileManager.Initialize();
     }
+
+	public void StartAI()
+	{
+		_isNetwork = false;
+		StartGame();
+	}
+
+	public void StartNetwork()
+	{
+		_isNetwork = true;
+		StartGame();
+	}
+
+	void StartGame()
+	{
+		_isPlaying = true;
+		_tileManager.Initialize();
+	}
+
+	public void FinishGame()
+	{
+		_isPlaying = false;
+	}
 
 	void Update()
 	{
+		if (_isPlaying == false)
+			return;
+
 		if (Utility.Input.TapDown)
 		{
 			Vector2 tapPos = Utility.Input.TapPosition01;
@@ -38,6 +66,7 @@ public class GameManager : MonoBehaviour
 
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
+		FinishGame();
 		SceneManager.LoadScene("Game");
 	}
 
@@ -45,11 +74,12 @@ public class GameManager : MonoBehaviour
 	{
 		Vector3 pos = _player.position;
 		pos.x = result.x;
-		_player.position = pos;
+		_player.DOMove(pos, 0.05f);
 	}
 
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
+		FinishGame();
 		SceneManager.LoadScene("Game");
 	}
 }
