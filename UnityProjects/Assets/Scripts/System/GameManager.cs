@@ -24,17 +24,32 @@ public class GameManager : MonoBehaviour
 			switch (result.type)
 			{
 				case TapResult.Type.Failed:
-					SceneManager.LoadScene("Game");
+					OnFailed(result, tapPos);
 					break;
 				case TapResult.Type.Success:
-					Vector3 pos = _player.position;
-					pos.x = result.x;
-					_player.position = pos;
+					OnSuccess(result, tapPos);
 					break;
 				case TapResult.Type.Clear:
-					SceneManager.LoadScene("Game");
+					OnClear(result, tapPos);
 					break;
 			}
 		}
+	}
+
+	void OnFailed(TapResult result, Vector2 tapPos)
+	{
+		SceneManager.LoadScene("Game");
+	}
+
+	void OnSuccess(TapResult result, Vector2 tapPos)
+	{
+		Vector3 pos = _player.position;
+		pos.x = result.x;
+		_player.position = pos;
+	}
+
+	void OnClear(TapResult result, Vector2 tapPos)
+	{
+		SceneManager.LoadScene("Game");
 	}
 }
