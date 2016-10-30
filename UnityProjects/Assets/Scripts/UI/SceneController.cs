@@ -1,18 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIManager : MonoBehaviour
+public class SceneController : MonoBehaviour
 {
 	[SerializeField]
 	GameManager _gameManager;
+	[SerializeField]
+	GameObject _titleGUI;
 
 	void Awake()
 	{
 		Utility.Input.Initialize();
 	}
 
-	void Start()
+	public void OnStartGame()
 	{
 		_gameManager.StartAI();
+		_titleGUI.SetActive(false);
 	}
 }
