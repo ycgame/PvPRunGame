@@ -23,10 +23,16 @@ public class GameManager : MonoBehaviour
 		StartGame();
 	}
 
-	public void StartNetwork()
+	public void StartNetwork(int w, int[] stage)
 	{
 		_isNetwork = true;
-		StartGame();
+		StartGame(w, stage);
+	}
+
+	void StartGame(int w, int[] stage)
+	{
+		_isPlaying = true;
+		_tileManager.Initialize(w, stage);
 	}
 
 	void StartGame()
@@ -67,7 +73,7 @@ public class GameManager : MonoBehaviour
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
 		FinishGame();
-		SceneManager.LoadScene("Game");
+		//SceneManager.LoadScene("Game");
 	}
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
@@ -80,6 +86,6 @@ public class GameManager : MonoBehaviour
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
 		FinishGame();
-		SceneManager.LoadScene("Game");
+		//SceneManager.LoadScene("Game");
 	}
 }
