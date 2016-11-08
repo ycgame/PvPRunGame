@@ -9,6 +9,7 @@ public class MessageInterpreter
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
+		Debug.Log("Recv Message : " + e.Data);
 		var recv = NetworkUtility.FromJson(e.Data);
 		if (!recv.ContainsKey("type"))
 		{
@@ -26,20 +27,24 @@ public class MessageInterpreter
 
 	public void Update()
 	{
-		foreach (var info in _messageBuffer)
+		if (_messageBuffer.Any())
 		{
-			switch (info.type)
+			foreach (var info in _messageBuffer)
 			{
-			case "match":
-				RecvMatchMessage(info.message, info.sender, info.args);
-				break;
-			case "step":
-				RecvStepMessage(info.message, info.sender, info.args);
-				break;
-			case "fin":
-				RecvFinishMessage(info.message, info.sender, info.args);
-				break;
+				switch (info.type)
+				{
+					case "match":
+						RecvMatchMessage(info.message, info.sender, info.args);
+						break;
+					case "step":
+						RecvStepMessage(info.message, info.sender, info.args);
+						break;
+					case "fin":
+						RecvFinishMessage(info.message, info.sender, info.args);
+						break;
+				}
 			}
+			_messageBuffer.Clear();
 		}
 	}
 

@@ -6,12 +6,18 @@ using MiniJSON;
 
 public class NetworkManager : MonoBehaviour
 {
+	private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
 	public static NetworkManager Instance { get; private set; }
 
 	public UserInfo Self { get; private set; }
 	public WebSocket Socket { get; private set; }
 
 	private MessageInterpreter _interpreter = new MessageInterpreter();
+
+	public string GetURL(string suffix)
+	{
+		return URL+suffix;
+	}
 
 	void Awake()
 	{
@@ -27,7 +33,7 @@ public class NetworkManager : MonoBehaviour
 
 	public IEnumerator UserCreatePost()
 	{
-		string url = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/users";
+		string url = GetURL("users");
 		WWWForm form = new WWWForm();
 		string name = "test" + Random.Range (0, 1000);
 		form.AddField("name", name);
@@ -59,7 +65,7 @@ public class NetworkManager : MonoBehaviour
 
 	public IEnumerator AIRequestPost()
 	{
-		string url = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/ais";
+		string url = GetURL("ais");
 		WWWForm form = new WWWForm();
 		string token = "Taichiro0709NaotoSasaki";
 		form.AddField("token", token);
@@ -69,7 +75,7 @@ public class NetworkManager : MonoBehaviour
 
 	public void ConnectWebSocket()
 	{
-		Socket = new WebSocket("ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/cable");
+		Socket = new WebSocket(GetURL("cable"));
 
 		Socket.OnOpen += (sender, e) =>
 		{
