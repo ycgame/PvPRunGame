@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
 using WebSocketSharp;
-using WebSocketSharp.Net;
 using MiniJSON;
 
 public class NetworkManager : MonoBehaviour
@@ -13,6 +11,8 @@ public class NetworkManager : MonoBehaviour
 	public UserInfo Self { get; private set; }
 	public WebSocket Socket { get; private set; }
 
+	private MessageInterpreter _interpreter = new MessageInterpreter();
+
 	void Awake()
 	{
 		Instance = this;
@@ -20,14 +20,9 @@ public class NetworkManager : MonoBehaviour
 		StartCoroutine(UserCreatePost());
 	}
 
-	Dictionary<string, object> FromJson(string jsonText)
+	void Update()
 	{
-		return Json.Deserialize(jsonText) as Dictionary<string, object>;
-	}
-
-	string ToJson(object json)
-	{
-		return Json.Serialize(json);
+		_interpreter.Update();
 	}
 
 	public IEnumerator UserCreatePost()
@@ -83,7 +78,7 @@ public class NetworkManager : MonoBehaviour
 
 		Socket.OnMessage += (sender, e) =>
 		{
-			OnMessage(sender, e);
+			_interpreter.OnRecvMessage(sender, e);
 		};
 
 		Socket.OnError += (sender, e) =>
@@ -97,49 +92,6 @@ public class NetworkManager : MonoBehaviour
 		};
 
 		Socket.Connect();
-	}
-
-	void OnMessage(object sender, MessageEventArgs e)
-	{
-		var recv = FromJson(e.Data);
-		if (!recv.ContainsKey("type"))
-		{
-			Debug.Log(e.Data);
-			var message = recv["message"] as Dictionary<string, object>;
-			var msgType = (string)message["type"];
-			if (msgType == "match")
-			{
-				RecvMatchMessage(message, sender, e);
-			}
-			else if (msgType == "step")
-			{
-				RecvStepMessage(message, sender, e);
-			}
-			else if (msgType == "fin")
-			{
-				RecvFinishMessage(message, sender, e);
-			}
-		}
-	}
-
-	void RecvMatchMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
-	{
-		Debug.Log(message["stage"]);
-		var stage = message["stage"] as List<object>;
-		SceneController.Instance.OnCreateTile(4, stage.Select(x => int.Parse(x.ToString())).ToArray());
-	}
-
-	void RecvStepMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
-	{
-		Debug.Log(message["step"]);
-		Debug.Log(message["step_count"]);
-	}
-
-	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
-	{
-		Debug.Log(message["fin"]);
-		Debug.Log(message["user"]);
-		Debug.Log(message["matched"]);
 	}
 
 	public void OnDestroy()

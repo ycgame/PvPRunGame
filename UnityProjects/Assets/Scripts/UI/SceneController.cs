@@ -13,40 +13,45 @@ public class SceneController : MonoBehaviour
 	int _w;
 	int[] _stage;
 	bool _matching;
-	bool _isReady;
 
 	void Awake()
 	{
 		Instance = this;
 		Utility.Input.Initialize();
-		_GUIs[(int)UIType.Matching].SetActive(false);
-	}
-
-	void Update()
-	{
-		if (_matching)
-			return;
-
-		if (_isReady)
-		{
-			_matching = true;
-			_gameManager.StartNetwork(_w, _stage);
-			_GUIs[(int)UIType.Matching].SetActive(false);
-		}
+		Show(UIType.Titie, true);
 	}
 
 	public void OnStartTimeAttack()
 	{
 		_gameManager.StartAI();
-		_GUIs[(int)UIType.Titie].SetActive(false);
+		HideAll();
 	}
 
 	public void OnStartNetwork()
 	{
 		NetworkManager.Instance.CreateMatch();
-		_GUIs[(int)UIType.Titie].SetActive(false);
-		_GUIs[(int)UIType.Matching].SetActive(true);
+		Show(UIType.Matching, true);
 		StartCoroutine(RequestAI());
+	}
+
+	public void Show(UIType type, bool isHideOthers = false)
+	{
+		if (isHideOthers)
+			HideAll();
+		_GUIs[(int)type].SetActive(true);
+	}
+
+	public void Hide(UIType type)
+	{
+		_GUIs[(int)type].SetActive(false);
+	}
+
+	public void HideAll()
+	{
+		for (int i = 0; i < (int)UIType.MAX; i++)
+		{
+			_GUIs[i].SetActive(false);
+		}
 	}
 
 	IEnumerator RequestAI()
@@ -59,12 +64,15 @@ public class SceneController : MonoBehaviour
 	{
 		_w = w;
 		_stage = stage;
-		_isReady = true;
+		_matching = true;
+		_gameManager.StartNetwork(_w, _stage);
+		HideAll();
 	}
 
 	public enum UIType
 	{
 		Titie,
 		Matching,
+		MAX,
 	}
 }
