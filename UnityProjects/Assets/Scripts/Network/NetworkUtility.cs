@@ -12,4 +12,14 @@ public static class NetworkUtility
 	{
 		return Json.Serialize(json);
 	}
+
+	public static int ObjectToInt(object o)
+	{
+		int res = -1;
+		if (int.TryParse(o.ToString(), out res) == false)
+		{
+			UnityEngine.Debug.LogError("Error");
+		}
+		return res;
+	}
 }

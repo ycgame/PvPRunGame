@@ -9,7 +9,7 @@ public class MessageInterpreter
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
-		Debug.Log("Recv Message : " + e.Data);
+		//Debug.Log("Recv Message : " + e.Data);
 		var recv = NetworkUtility.FromJson(e.Data);
 		if (!recv.ContainsKey("type"))
 		{
@@ -51,13 +51,13 @@ public class MessageInterpreter
 	void RecvMatchMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		var stage = message["stage"] as List<object>;
-		SceneController.Instance.OnCreateTile(4, stage.Select(x => int.Parse(x.ToString())).ToArray());
+		SceneController.Instance.OnCreateTile(4, stage.Select(x => NetworkUtility.ObjectToInt(x)).ToArray());
 	}
 
 	void RecvStepMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
-		int step = (int)message["step"];
-		int stepCnt = (int)message["step_count"];
+		int step = NetworkUtility.ObjectToInt(message["step"]);
+		int stepCnt = NetworkUtility.ObjectToInt(message["step_count"]);
 		GameManager.Instance.MoveAvator(step, stepCnt, false);
 	}
 
