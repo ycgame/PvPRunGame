@@ -9,10 +9,10 @@ public class MessageInterpreter
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
-		//Debug.Log("Recv Message : " + e.Data);
 		var recv = NetworkUtility.FromJson(e.Data);
 		if (!recv.ContainsKey("type"))
 		{
+			Debug.Log("Recv Message : " + e.Data);
 			var message = recv["message"] as Dictionary<string, object>;
 			var args = new MessageInfo()
 			{
@@ -58,14 +58,12 @@ public class MessageInterpreter
 	{
 		int step = NetworkUtility.ObjectToInt(message["step"]);
 		int stepCnt = NetworkUtility.ObjectToInt(message["step_count"]);
-		GameManager.Instance.MoveAvator(step, stepCnt, false);
+		GameManager.Instance.OnStepOppopnent(step, stepCnt);
 	}
 
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
-		Debug.Log(message["fin"]);
-		Debug.Log(message["user"]);
-		Debug.Log(message["matched"]);
+		GameManager.Instance.OnFinishGame();
 	}
 
 	public struct MessageInfo

@@ -82,16 +82,33 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void MoveAvator(int step, int stepCnt, bool isPlayer)
+	void MoveAvator(int step, int stepCnt, bool isPlayer)
 	{
 		Transform avator = isPlayer ? _player : _opponent;
 		avator.DOMove(_tileManager.CalcTilePosition(step, stepCnt), 0.05f).SetEase(Ease.Linear);
 	}
 
-	void OnFailed(TapResult result, Vector2 tapPos)
+	public void OnStepOppopnent(int step, int stepCnt)
+	{
+		MoveAvator(step, stepCnt, false);
+	}
+
+	public void OnFinishGame()
 	{
 		FinishGame();
-		//SceneManager.LoadScene("Game");
+		SceneController.Instance.Show(SceneController.UIType.Result, true);
+	}
+
+	void OnFailed(TapResult result, Vector2 tapPos)
+	{
+		if (_isNetwork)
+		{
+			_isPlaying = false;
+		}
+		else
+		{
+			OnFinishGame();
+		}
 	}
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
@@ -102,7 +119,13 @@ public class GameManager : MonoBehaviour
 
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
-		FinishGame();
-		//SceneManager.LoadScene("Game");
+		if (_isNetwork)
+		{
+			_isPlaying = false;
+		}
+		else
+		{
+			OnFinishGame();
+		}
 	}
 }

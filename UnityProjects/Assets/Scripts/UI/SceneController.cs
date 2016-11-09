@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class SceneController : MonoBehaviour
@@ -30,6 +31,16 @@ public class SceneController : MonoBehaviour
 		NetworkManager.Instance.CreateMatch();
 		Show(UIType.Matching, true);
 		StartCoroutine(RequestAI());
+	}
+
+	public void OnBack()
+	{
+		SceneManager.LoadScene("Game");
+	}
+
+	public void OnRestart()
+	{
+		SceneManager.LoadScene("Game");
 	}
 
 	public void Show(UIType type, bool isHideOthers = false)
@@ -71,6 +82,7 @@ public class SceneController : MonoBehaviour
 	{
 		Titie,
 		Matching,
+		Result,
 		MAX,
 	}
 }
