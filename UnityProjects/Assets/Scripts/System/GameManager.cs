@@ -49,11 +49,6 @@ public class GameManager : MonoBehaviour
 		_isPlaying = true;
 	}
 
-	public void FinishGame()
-	{
-		_isPlaying = false;
-	}
-
 	void Update()
 	{
 		if (_isPlaying == false)
@@ -86,6 +81,10 @@ public class GameManager : MonoBehaviour
 	{
 		Transform avator = isPlayer ? _player : _opponent;
 		avator.DOMove(_tileManager.CalcTilePosition(step, stepCnt), 0.05f).SetEase(Ease.Linear);
+		if (isPlayer)
+		{
+			Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(stepCnt), 0.05f);
+		}
 	}
 
 	public void OnStepOppopnent(int step, int stepCnt)
@@ -95,29 +94,27 @@ public class GameManager : MonoBehaviour
 
 	public void OnFinishGame()
 	{
-		FinishGame();
+		_isPlaying = false;
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
 	}
 
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
-		if (_isNetwork)
-		{
-			_isPlaying = false;
-		}
-		else
-		{
-			OnFinishGame();
-		}
+		FinishGame();
 	}
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
 		MoveAvator(result.step, result.stepCnt, true);
-		Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(result.stepCnt), 0.05f);
 	}
 
 	void OnClear(TapResult result, Vector2 tapPos)
+	{
+		MoveAvator(result.step, result.stepCnt, true);
+		FinishGame();
+	}
+
+	void FinishGame()
 	{
 		if (_isNetwork)
 		{
