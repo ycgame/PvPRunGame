@@ -56,6 +56,9 @@ public class MessageInterpreter
 
 	void RecvStepMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
+		int step = (int)message["step"];
+		int stepCnt = (int)message["step_count"];
+		GameManager.Instance.MoveAvator(step, stepCnt, false);
 	}
 
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)

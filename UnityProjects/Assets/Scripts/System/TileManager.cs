@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using DG.Tweening;
 
 public class TileManager : MonoBehaviour
 {
@@ -15,34 +14,30 @@ public class TileManager : MonoBehaviour
 	private int _height = 4;
 	public int Height { get { return _height; } }
 	[SerializeField]
-	private GameObject _tilePrefab;
+	private GameObject _wrongTilePrefab;
+	[SerializeField]
+	private GameObject _correnctTilePrefab;
 	private float _tileHeight;
 	private float _tileWidth;
+	private int _stepCount;
+
 
 	private void CreateTiles()
 	{
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
-		float h = screenH / (_height+1);
-		float w = screenW / _width;
-		float b = -h * ((float)_height / 2 - 1f);
-		float l = -w * ((float)_width / 2 - 0.5f);
+		_tileHeight = screenH / (_height+1);
+		_tileWidth = screenW / _width;
 		for (int j = 0; j < _length; j++)
 		{
 			for (int i = 0; i < _width; i++) {
-				GameObject tile = Instantiate(_tilePrefab) as GameObject;
+				var prefab = _correctIndexes[j] == i ? _correnctTilePrefab : _wrongTilePrefab;
+				GameObject tile = Instantiate(prefab) as GameObject;
 				tile.transform.SetParent(this.transform);
-				tile.transform.position = new Vector2(l+w*i, b+h*j);
-				tile.transform.localScale = new Vector3(w, h, 1);
-				if (_correctIndexes[j] == i)
-				{
-					tile.GetComponentInChildren<SpriteRenderer>().color = Color.black;
-				}
+				tile.transform.position = CalcTilePosition(i, j);
+				tile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 			}
 		}
-
-		_tileHeight = h;
-		_tileWidth = w;
 	}
 
 
@@ -71,9 +66,9 @@ public class TileManager : MonoBehaviour
 		float end = (float)(correct + 1) / _width;
 		float x = tapPos.x;
 		int step = (int)(x * _width);
-		Debug.Log(step);
-		NetworkManager.Instance.SendStep(step);
 		TapResult result = new TapResult();
+		result.step = step;
+		result.stepCnt = _currentIndex;
 		if (start <= x && x <= end)
 		{
 			_currentIndex++;
@@ -83,8 +78,6 @@ public class TileManager : MonoBehaviour
 			}
 			else
 			{
-				transform.DOMoveY(-1 * _currentIndex * _tileHeight, 0.05f).SetEase(Ease.Linear);
-				result.x = -_tileWidth * ((float)_width / 2 - 0.5f) + _tileWidth * correct;
 				result.type = TapResult.Type.Success;
 			}
 		}
@@ -95,11 +88,23 @@ public class TileManager : MonoBehaviour
 		return result;
 	}
 
+	public Vector3 CalcTilePosition(int step, int stepCnt)
+	{
+		float l = -_tileWidth * ((float)_width / 2 - 0.5f);
+		float b = -_tileHeight * ((float)_height / 2 - 1f);
+		return new Vector3(l+_tileWidth*step, b+_tileHeight*stepCnt, 0);
+	}
+
+	public float CalcCameraY(int stepCnt)
+	{
+		return _tileHeight * (stepCnt + 1);
+	}
 }
 
 public struct TapResult
 {
-	public float x;
+	public int step;
+	public int stepCnt;
 	public Type type;
 
 	public enum Type
