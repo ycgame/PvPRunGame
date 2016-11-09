@@ -6,8 +6,6 @@ public class SceneController : MonoBehaviour
 	public static SceneController Instance { get; private set; }
 
 	[SerializeField]
-	GameManager _gameManager;
-	[SerializeField]
 	GameObject[] _GUIs;
 
 	int _w;
@@ -23,7 +21,7 @@ public class SceneController : MonoBehaviour
 
 	public void OnStartTimeAttack()
 	{
-		_gameManager.StartAI();
+		GameManager.Instance.StartAI();
 		HideAll();
 	}
 
@@ -65,7 +63,7 @@ public class SceneController : MonoBehaviour
 		_w = w;
 		_stage = stage;
 		_matching = true;
-		_gameManager.StartNetwork(_w, _stage);
+		GameManager.Instance.StartNetwork(_w, _stage);
 		HideAll();
 	}
 

@@ -5,7 +5,7 @@ using WebSocketSharp;
 
 public class MessageInterpreter
 {
-	List<MessageArgs> _messageBuffer = new List<MessageArgs>();
+	List<MessageInfo> _messageBuffer = new List<MessageInfo>();
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
@@ -14,7 +14,7 @@ public class MessageInterpreter
 		if (!recv.ContainsKey("type"))
 		{
 			var message = recv["message"] as Dictionary<string, object>;
-			var args = new MessageArgs()
+			var args = new MessageInfo()
 			{
 				message = message,
 				type = (string)message["type"],
@@ -56,8 +56,6 @@ public class MessageInterpreter
 
 	void RecvStepMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
-		Debug.Log(message["step"]);
-		Debug.Log(message["step_count"]);
 	}
 
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
@@ -67,7 +65,7 @@ public class MessageInterpreter
 		Debug.Log(message["matched"]);
 	}
 
-	public struct MessageArgs
+	public struct MessageInfo
 	{
 		public string type;
 		public Dictionary<string, object> message;

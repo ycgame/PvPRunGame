@@ -4,6 +4,8 @@ using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager Instance { get; private set; }
+
 	[SerializeField]
     Transform _player;
     Transform _opponent;
@@ -14,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+		Instance = this;
 		_tileManager = GetComponentInChildren<TileManager>();
     }
 
