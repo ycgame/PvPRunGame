@@ -7,7 +7,7 @@ public class SceneController : MonoBehaviour
 	public static SceneController Instance { get; private set; }
 
 	[SerializeField]
-	GameObject[] _GUIs;
+	UIBase[] _GUIs;
 
 	int _w;
 	int[] _stage;

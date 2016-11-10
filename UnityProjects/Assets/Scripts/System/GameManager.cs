@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     {
 		Instance = this;
 		_tileManager = GetComponentInChildren<TileManager>();
+		_player.gameObject.SetActive(false);
+		_opponent.gameObject.SetActive(false);
     }
 
 	public void StartAI()
@@ -39,13 +41,14 @@ public class GameManager : MonoBehaviour
 
 	void StartGame()
 	{
-		_opponent.gameObject.SetActive(_isNetwork);
 		OnStartGame();
 		_tileManager.Initialize();
 	}
 
 	void OnStartGame()
 	{
+		_player.gameObject.SetActive(true);
+		_opponent.gameObject.SetActive(_isNetwork);
 		_isPlaying = true;
 	}
 

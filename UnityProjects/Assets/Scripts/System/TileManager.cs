@@ -26,8 +26,9 @@ public class TileManager : MonoBehaviour
 	{
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
-		_tileHeight = screenH / (_height+1);
 		_tileWidth = screenW / _width;
+		//_tileHeight = screenH / (_height+1);
+		_tileHeight = _tileWidth;
 		for (int j = 0; j < _length; j++)
 		{
 			for (int i = 0; i < _width; i++) {
