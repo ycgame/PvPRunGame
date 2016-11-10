@@ -63,14 +63,14 @@ public class TileManager : MonoBehaviour
 	public TapResult OnTapTile(Vector2 tapPos)
 	{
 		int correct = _correctIndexes[_currentIndex];
-		float start = (float)correct / _width;
-		float end = (float)(correct + 1) / _width;
 		float x = tapPos.x;
 		int step = (int)(x * _width);
-		TapResult result = new TapResult();
-		result.step = step;
-		result.stepCnt = _currentIndex;
-		if (start <= x && x <= end)
+		TapResult result = new TapResult()
+		{
+			step = step,
+			stepCnt = _currentIndex
+		};
+		if (step == correct)
 		{
 			_currentIndex++;
 			if (_currentIndex == _length)
