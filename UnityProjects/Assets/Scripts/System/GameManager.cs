@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     {
 		Instance = this;
 		_tileManager = GetComponentInChildren<TileManager>();
+		_player.gameObject.SetActive(false);
+		_opponent.gameObject.SetActive(false);
     }
 
 	public void StartAI()
@@ -39,19 +41,15 @@ public class GameManager : MonoBehaviour
 
 	void StartGame()
 	{
-		_opponent.gameObject.SetActive(_isNetwork);
 		OnStartGame();
 		_tileManager.Initialize();
 	}
 
 	void OnStartGame()
 	{
+		_player.gameObject.SetActive(true);
+		_opponent.gameObject.SetActive(_isNetwork);
 		_isPlaying = true;
-	}
-
-	public void FinishGame()
-	{
-		_isPlaying = false;
 	}
 
 	void Update()
@@ -86,6 +84,10 @@ public class GameManager : MonoBehaviour
 	{
 		Transform avator = isPlayer ? _player : _opponent;
 		avator.DOMove(_tileManager.CalcTilePosition(step, stepCnt), 0.05f).SetEase(Ease.Linear);
+		if (isPlayer)
+		{
+			Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(stepCnt), 0.05f);
+		}
 	}
 
 	public void OnStepOppopnent(int step, int stepCnt)
@@ -95,29 +97,27 @@ public class GameManager : MonoBehaviour
 
 	public void OnFinishGame()
 	{
-		FinishGame();
+		_isPlaying = false;
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
 	}
 
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
-		if (_isNetwork)
-		{
-			_isPlaying = false;
-		}
-		else
-		{
-			OnFinishGame();
-		}
+		FinishGame();
 	}
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
 		MoveAvator(result.step, result.stepCnt, true);
-		Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(result.stepCnt), 0.05f);
 	}
 
 	void OnClear(TapResult result, Vector2 tapPos)
+	{
+		MoveAvator(result.step, result.stepCnt, true);
+		FinishGame();
+	}
+
+	void FinishGame()
 	{
 		if (_isNetwork)
 		{

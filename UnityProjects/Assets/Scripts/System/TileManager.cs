@@ -26,8 +26,9 @@ public class TileManager : MonoBehaviour
 	{
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
-		_tileHeight = screenH / (_height+1);
 		_tileWidth = screenW / _width;
+		//_tileHeight = screenH / (_height+1);
+		_tileHeight = _tileWidth;
 		for (int j = 0; j < _length; j++)
 		{
 			for (int i = 0; i < _width; i++) {
@@ -62,14 +63,14 @@ public class TileManager : MonoBehaviour
 	public TapResult OnTapTile(Vector2 tapPos)
 	{
 		int correct = _correctIndexes[_currentIndex];
-		float start = (float)correct / _width;
-		float end = (float)(correct + 1) / _width;
 		float x = tapPos.x;
 		int step = (int)(x * _width);
-		TapResult result = new TapResult();
-		result.step = step;
-		result.stepCnt = _currentIndex;
-		if (start <= x && x <= end)
+		TapResult result = new TapResult()
+		{
+			step = step,
+			stepCnt = _currentIndex
+		};
+		if (step == correct)
 		{
 			_currentIndex++;
 			if (_currentIndex == _length)
