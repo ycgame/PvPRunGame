@@ -65,15 +65,18 @@ public class GameManager : MonoBehaviour
 	//カウントダウン
 	IEnumerator CountDown(int count)
 	{
+		SoundManager.Instance.StopBGM();
 		var ui = SceneController.Instance.GetUI<UI_InGame>(SceneController.UIType.InGame);
 		SceneController.Instance.Show(SceneController.UIType.InGame, true);
 		for (int c = count; c > 0; c--)
 		{
 			ui.SetCountDownText(c);
+			SoundManager.Instance.PlaySE(SEType.CountDown);
 			yield return new WaitForSeconds(1f);
 		}
 		ui.ShowStage();
 		_isPlaying = true;
+		SoundManager.Instance.PlayBGM(BGMType.InGame);
 	}
 
 	//タップの挙動をとる
@@ -128,13 +131,16 @@ public class GameManager : MonoBehaviour
 	//終了したとき呼ばれる
 	public void OnFinishGame(PlayerType winner = PlayerType.Player)
 	{
+		SoundManager.Instance.StopBGM();
+		_isPlaying = false;
 		StartCoroutine(FinishCoroutine(winner));
 	}
 
 	IEnumerator FinishCoroutine(PlayerType winner)
 	{
 		yield return new WaitForSeconds(1f);
-		_isPlaying = false;
+		SoundManager.Instance.PlaySE(winner == PlayerType.Player ? SEType.Win : SEType.Lose);
+		SoundManager.Instance.PlayBGM(BGMType.Menu);
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
 		var ui = SceneController.Instance.GetUI<UI_Result>(SceneController.UIType.Result);
 		if (IsNetwork)
@@ -157,12 +163,14 @@ public class GameManager : MonoBehaviour
 	//タップ失敗
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
+		SoundManager.Instance.PlaySE(SEType.FailTap);
 		FinishGame(false);
 	}
 
 	//タップ成功
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
+		SoundManager.Instance.PlaySE(SEType.CorrectTap);
 		if (IsNetwork == false)
 		{
 			NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
@@ -172,6 +180,7 @@ public class GameManager : MonoBehaviour
 	//ゴール
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
+		SoundManager.Instance.PlaySE(SEType.CorrectTap);
 		FinishGame(true);
 	}
 

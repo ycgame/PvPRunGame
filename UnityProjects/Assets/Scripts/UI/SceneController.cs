@@ -18,6 +18,7 @@ public class SceneController : MonoBehaviour
 
 	public void Initialize()
 	{
+		SoundManager.Instance.PlayBGM(BGMType.Menu);
 		Show(UIType.Titie, true);
 		var title = GetUI<UI_Title>(UIType.Titie);
 		if (title != null)
@@ -28,18 +29,26 @@ public class SceneController : MonoBehaviour
 
 	public void OnStartTimeAttack()
 	{
+		SoundManager.Instance.PlaySE(SEType.ButtonClick);
 		GameManager.Instance.StartTimeAttack();
 	}
 
 	public void OnStartNetwork()
 	{
+		SoundManager.Instance.PlaySE(SEType.ButtonClick);
 		NetworkManager.Instance.CreateMatch();
 		Show(UIType.Matching, true);
 		StartCoroutine(RequestAI());
 	}
 
+	public void OnRanking()
+	{
+		SoundManager.Instance.PlaySE(SEType.ButtonClick);
+	}
+
 	public void OnBack()
 	{
+		SoundManager.Instance.PlaySE(SEType.ButtonClick);
 		Show(UIType.Titie, true);
 	}
 
