@@ -10,5 +10,8 @@ namespace Utility
 		bool TapAnyUGUI { get; }
 		Vector2 TapPosition { get; }
 		Vector2 TapPosition01 { get; }
+		bool GetTapDown(int index);
+		bool GetTap(int index);
+		bool GetTapUp(int index);
 	}
 }

@@ -86,26 +86,29 @@ public class GameManager : MonoBehaviour
 			return;
 
 		_elapsedTime += Time.deltaTime;
-		if (Utility.Input.TapDown)
+		for (int i = 0; i < 4; i++)
 		{
-			Vector2 tapPos = Utility.Input.TapPosition01;
-			var result = _tileManager.OnTapTile(tapPos);
-			if (IsNetwork)
+			if (Utility.Input.GetTapDown(i))
 			{
-				NetworkManager.Instance.SendStep(result.step);
-			}
-			MoveAvator(result.step, result.stepCnt, PlayerType.Player);
-			switch (result.type)
-			{
-				case TapResult.Type.Failed:
-					OnFailed(result, tapPos);
-					break;
-				case TapResult.Type.Success:
-					OnSuccess(result, tapPos);
-					break;
-				case TapResult.Type.Clear:
-					OnClear(result, tapPos);
-					break;
+				Vector2 tapPos = Utility.Input.TapPosition01;
+				var result = _tileManager.OnTapTile(tapPos);
+				if (IsNetwork)
+				{
+					NetworkManager.Instance.SendStep(result.step);
+				}
+				MoveAvator(result.step, result.stepCnt, PlayerType.Player);
+				switch (result.type)
+				{
+					case TapResult.Type.Failed:
+						OnFailed(result, tapPos);
+						break;
+					case TapResult.Type.Success:
+						OnSuccess(result, tapPos);
+						break;
+					case TapResult.Type.Clear:
+						OnClear(result, tapPos);
+						break;
+				}
 			}
 		}
 	}

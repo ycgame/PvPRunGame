@@ -62,5 +62,29 @@ namespace Utility
 		{
 			return count <= UnityEngine.Input.touchCount;
 		}
+
+		public bool GetTapDown(int index)
+		{
+			if (index < 0 || index >= UnityEngine.Input.touchCount)
+				return false;
+			else
+				return UnityEngine.Input.GetTouch(index).phase == TouchPhase.Began;
+		}
+
+		public bool GetTap(int index)
+		{
+			if (index < 0 || index >= UnityEngine.Input.touchCount)
+				return false;
+			else
+				return UnityEngine.Input.GetTouch(index).phase == TouchPhase.Moved;
+		}
+
+		public bool GetTapUp(int index)
+		{
+			if (index < 0 || index >= UnityEngine.Input.touchCount)
+				return false;
+			else
+				return UnityEngine.Input.GetTouch(index).phase == TouchPhase.Ended;
+		}
 	}
 }

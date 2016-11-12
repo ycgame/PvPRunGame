@@ -27,5 +27,20 @@ namespace Utility
 		public static Vector2 TapPosition { get { return _input.TapPosition; } }
 
 		public static Vector2 TapPosition01 { get { return _input.TapPosition01; } }
+
+		public static bool GetTapDown(int index)
+		{
+			return _input.GetTapDown(index);
+		}
+
+		public static bool GetTap(int index)
+		{
+			return _input.GetTap(index);
+		}
+
+		public static bool GetTapUp(int index)
+		{
+			return _input.GetTapUp(index);
+		}
 	}
 }

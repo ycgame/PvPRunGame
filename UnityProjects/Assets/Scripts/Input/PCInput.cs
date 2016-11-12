@@ -53,5 +53,29 @@ namespace Utility
 				return new Vector2(p.x / Screen.width, p.y / Screen.height);
 			}
 		}
+
+		public bool GetTapDown(int index)
+		{
+			if (index < 0 || index > 1)
+				return false;
+			else
+				return UnityEngine.Input.GetMouseButtonDown(index);
+		}
+
+		public bool GetTap(int index)
+		{
+			if (index < 0 || index > 1)
+				return false;
+			else
+				return UnityEngine.Input.GetMouseButton(index);
+		}
+
+		public bool GetTapUp(int index)
+		{
+			if (index < 0 || index > 1)
+				return false;
+			else
+				return UnityEngine.Input.GetMouseButtonUp(index);
+		}
 	}
 }
