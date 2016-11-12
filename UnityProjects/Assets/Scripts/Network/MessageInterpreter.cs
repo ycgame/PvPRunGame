@@ -52,6 +52,13 @@ public class MessageInterpreter
 	void RecvMatchMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		var stage = message["stage"] as List<object>;
+		var opponentInfo = message["matched"] as Dictionary<string, object>;
+		NetworkManager.Instance.Opponent = new UserInfo()
+		{
+			id = -1,
+			name = (string)opponentInfo["name"],
+			token = "dummy",
+		};
 		SceneController.Instance.OnCreateTile(4, stage.Select(x => NetworkUtility.ObjectToInt(x)).ToArray());
 	}
 

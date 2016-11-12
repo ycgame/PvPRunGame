@@ -68,9 +68,14 @@ public class SceneController : MonoBehaviour
 		}
 	}
 
+	public void KillAIRequest()
+	{
+		StopAllCoroutines();
+	}
+
 	IEnumerator RequestAI()
 	{
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(10f);
 		yield return NetworkManager.Instance.AIRequestPost();
 	}
 

@@ -11,6 +11,7 @@ public class NetworkManager : MonoBehaviour
 	public static NetworkManager Instance { get; private set; }
 
 	public UserInfo Self { get; private set; }
+	public UserInfo Opponent { get; set; }
 	public WebSocket Socket { get; private set; }
 
 	private MessageInterpreter _interpreter = new MessageInterpreter();
