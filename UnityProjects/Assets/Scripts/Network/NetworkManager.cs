@@ -159,25 +159,25 @@ public class UserInfo
 
 public class Subscribe
 {
-	public readonly string command = "subscribe";
-	public readonly string identifier = JsonUtility.ToJson(new Channel(), false);
+	public string command = "subscribe";
+	public string identifier = JsonUtility.ToJson(new Channel(), false);
 }
 
 public class Channel
 {
-	public readonly string channel = "MatchChannel";
+	public string channel = "MatchChannel";
 }
 
 public class MatchMessage
 {
 	public string data;
-	public readonly string command = "message";
+	public string command = "message";
 	public string identifier = JsonUtility.ToJson(new Channel(), false);
 
 	public MatchMessage(UserInfo userInfo)
 	{
 		data = JsonUtility.ToJson(new Data(userInfo), false);
-	}
+	}	
 
 	public class Data
 	{
@@ -186,7 +186,7 @@ public class MatchMessage
 		public string action = "match";
 
 		public Data(UserInfo userInfo)
-		{
+		{	
 			id = userInfo.id;
 			token = userInfo.token;
 		}
