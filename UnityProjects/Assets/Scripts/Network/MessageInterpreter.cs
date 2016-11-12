@@ -59,6 +59,7 @@ public class MessageInterpreter
 			name = (string)opponentInfo["name"],
 			token = "dummy",
 		};
+		SceneController.Instance.KillAIRequest();
 		SceneController.Instance.OnCreateTile(4, stage.Select(x => NetworkUtility.ObjectToInt(x)).ToArray());
 	}
 
