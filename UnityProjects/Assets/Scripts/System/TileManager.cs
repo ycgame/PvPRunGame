@@ -5,6 +5,8 @@ public class TileManager : MonoBehaviour
 	int _currentIndex;
 	int[] _correctIndexes;
 	GameObject[,] _tileObjects;
+	GameObject[] _afterTileObjects;
+	GameObject _failTileObject;
 	[SerializeField]
 	private int _createLength = 50;
 	[SerializeField]
@@ -20,6 +22,10 @@ public class TileManager : MonoBehaviour
 	private GameObject _wrongTilePrefab;
 	[SerializeField]
 	private GameObject _correnctTilePrefab;
+	[SerializeField]
+	private GameObject _afterTilePrefab;
+	[SerializeField]
+	private GameObject _failTilePrefab;
 	private float _tileHeight;
 	private float _tileWidth;
 
@@ -31,6 +37,7 @@ public class TileManager : MonoBehaviour
 	private void CreateTiles()
 	{
 		_tileObjects = new GameObject[_width,_createLength];
+		_afterTileObjects = new GameObject[_createLength];
 		for (int j = 0; j < _createLength; j++)
 		{
 			for (int i = 0; i < _width; i++) {
@@ -39,7 +46,13 @@ public class TileManager : MonoBehaviour
 				tile.transform.SetParent(this.transform);
 				_tileObjects[i, j] = tile;
 			}
+			GameObject afterTile = Instantiate(_afterTilePrefab) as GameObject;
+			afterTile.transform.SetParent(this.transform);
+			_afterTileObjects[j] = afterTile;
 		}
+		GameObject failTile = Instantiate(_failTilePrefab) as GameObject;
+		failTile.transform.SetParent(this.transform);
+		_failTileObject = failTile;
 	}
 
 	private void SetTiles()
@@ -54,12 +67,20 @@ public class TileManager : MonoBehaviour
 		{
 			int count = 1;
 			for (int i = 0; i < _width; i++) {
-				GameObject tile = i == _correctIndexes[j] ? _tileObjects[0, j] : _tileObjects[count++, j];
+				bool correct = i == _correctIndexes[j];
+				GameObject tile = correct ? _tileObjects[0, j] : _tileObjects[count++, j];
 				tile.transform.position = CalcTilePosition(i, j);
 				tile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 				tile.SetActive(true);
+				if (correct)
+				{
+					GameObject afterTile = _afterTileObjects[j];
+					afterTile.transform.position = CalcTilePosition(i, j);
+					afterTile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
+				}
 			}
 		}
+		_failTileObject.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 	}
 
 	private void HideTile()
@@ -68,6 +89,11 @@ public class TileManager : MonoBehaviour
 		{
 			tile.SetActive(false);
 		}
+		foreach (var tile in _afterTileObjects)
+		{
+			tile.SetActive(false);
+		}
+		_failTileObject.SetActive(false);
 	}
 
 	public void Initialize()
@@ -106,6 +132,7 @@ public class TileManager : MonoBehaviour
 		};
 		if (step == correct)
 		{
+			_afterTileObjects[_currentIndex].SetActive(true);
 			_currentIndex++;
 			if (_currentIndex == _length)
 			{
@@ -119,6 +146,8 @@ public class TileManager : MonoBehaviour
 		else
 		{
 			result.type = TapResult.Type.Failed;
+			_failTileObject.SetActive(true);
+			_failTileObject.transform.position = CalcTilePosition(step, _currentIndex);
 		}
 		return result;
 	}

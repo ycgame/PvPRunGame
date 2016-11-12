@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
 	[SerializeField]
     Transform _player = null, _opponent = null;
-	bool _isNetwork;
+	public bool IsNetwork { get; private set; }
     bool _isPlaying;
     float _elapsedTime;
 
@@ -25,14 +25,14 @@ public class GameManager : MonoBehaviour
 	//タイムアタック
 	public void StartTimeAttack()
 	{
-		_isNetwork = false;
+		IsNetwork = false;
 		StartGame();
 	}
 
 	//通信対戦
 	public void StartNetwork(int w, int[] stage)
 	{
-		_isNetwork = true;
+		IsNetwork = true;
 		StartGame(w, stage);
 	}
 
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 	void OnStartGame()
 	{
 		_player.gameObject.SetActive(true);
-		_opponent.gameObject.SetActive(_isNetwork);
+		_opponent.gameObject.SetActive(IsNetwork);
 		Camera.main.transform.position = 10f * Vector3.back;
 		_player.localPosition = Vector3.zero;
 		_opponent.localPosition = Vector3.zero;
@@ -87,10 +87,11 @@ public class GameManager : MonoBehaviour
 		{
 			Vector2 tapPos = Utility.Input.TapPosition01;
 			var result = _tileManager.OnTapTile(tapPos);
-			if (_isNetwork)
+			if (IsNetwork)
 			{
 				NetworkManager.Instance.SendStep(result.step);
 			}
+			MoveAvator(result.step, result.stepCnt, PlayerType.Player);
 			switch (result.type)
 			{
 				case TapResult.Type.Failed:
@@ -124,13 +125,19 @@ public class GameManager : MonoBehaviour
 		MoveAvator(step, stepCnt, PlayerType.Opponent);
 	}
 
-	//したとき呼ばれる
+	//終了したとき呼ばれる
 	public void OnFinishGame(PlayerType winner = PlayerType.Player)
 	{
+		StartCoroutine(FinishCoroutine(winner));
+	}
+
+	IEnumerator FinishCoroutine(PlayerType winner)
+	{
+		yield return new WaitForSeconds(1f);
 		_isPlaying = false;
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
 		var ui = SceneController.Instance.GetUI<UI_Result>(SceneController.UIType.Result);
-		if (_isNetwork)
+		if (IsNetwork)
 		{
 			ui.ShowOnlineResult(new OnlineResultArgs()
 			{
@@ -147,29 +154,30 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	//タップ失敗
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
 		FinishGame(false);
 	}
 
+	//タップ成功
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
-		if (_isNetwork == false)
+		if (IsNetwork == false)
 		{
 			NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
 		}
-		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
 	}
 
+	//ゴール
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
-		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
 		FinishGame(true);
 	}
 
 	void FinishGame(bool success)
 	{
-		if (_isNetwork)
+		if (IsNetwork)
 		{
 			_isPlaying = false;
 		}

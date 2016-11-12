@@ -23,8 +23,16 @@ public class UI_InGame : UIBase
 	void OnEnable()
 	{
 		SetCountDownActive(true);
-		_playerNameText.text = NetworkManager.Instance.Self.name;
-		_opponentNameText.text = NetworkManager.Instance.Opponent.name;
+		if (GameManager.Instance.IsNetwork)
+		{
+			_playerNameText.text = NetworkManager.Instance.Self.name;
+			_opponentNameText.text = NetworkManager.Instance.Opponent.name;
+		}
+		else
+		{
+			SetTextActive(false);
+			_countDownText.enabled = true;
+		}
 	}
 
 	public void SetCountDownText(int count)
@@ -40,6 +48,11 @@ public class UI_InGame : UIBase
 	void SetCountDownActive(bool value)
 	{
 		_backgroundImage.enabled = value;
+		SetTextActive(value);
+	}
+
+	void SetTextActive(bool value)
+	{
 		foreach (var text in _texts)
 		{
 			text.enabled = value;
