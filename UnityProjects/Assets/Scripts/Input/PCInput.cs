@@ -80,7 +80,7 @@ namespace Utility
 
 		public Vector2 GetTapPosition(int index)
 		{
-			if (index < 0 || index >= UnityEngine.Input.touchCount)
+			if (index < 0 || index > 1)
 				return Vector2.zero;
 			else
 				return UnityEngine.Input.mousePosition;

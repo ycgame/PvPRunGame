@@ -143,7 +143,6 @@ public class GameManager : MonoBehaviour
 	{
 		yield return new WaitForSeconds(1f);
 		SoundManager.Instance.PlaySE(winner == PlayerType.Player ? SEType.Win : SEType.Lose);
-		SoundManager.Instance.PlayBGM(BGMType.Menu);
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
 		var ui = SceneController.Instance.GetUI<UI_Result>(SceneController.UIType.Result);
 		if (IsNetwork)
@@ -161,6 +160,8 @@ public class GameManager : MonoBehaviour
 				time = _elapsedTime,
 			});
 		}
+		yield return new WaitForSeconds(1.5f);
+		SoundManager.Instance.PlayBGM(BGMType.Menu);
 	}
 
 	//タップ失敗
