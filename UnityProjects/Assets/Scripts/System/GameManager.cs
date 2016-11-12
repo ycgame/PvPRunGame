@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Collections;
 using DG.Tweening;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     Transform _player = null, _opponent = null;
 	bool _isNetwork;
     bool _isPlaying;
+    float _elapsedTime;
 
     TileManager _tileManager;
 
@@ -57,6 +58,20 @@ public class GameManager : MonoBehaviour
 		Camera.main.transform.position = 10f * Vector3.back;
 		_player.localPosition = Vector3.zero;
 		_opponent.localPosition = Vector3.zero;
+		_elapsedTime = 0f;
+		StartCoroutine(CountDown(3));
+	}
+
+	IEnumerator CountDown(int count)
+	{
+		var ui = SceneController.Instance.GetUI<UI_InGame>(SceneController.UIType.InGame);
+		SceneController.Instance.Show(SceneController.UIType.InGame, true);
+		for (int c = count; c > 0; c--)
+		{
+			ui.SetCountDownText(c);
+			yield return new WaitForSeconds(1f);
+		}
+		ui.ShowStage();
 		_isPlaying = true;
 	}
 

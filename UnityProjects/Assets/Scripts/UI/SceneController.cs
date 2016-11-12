@@ -32,7 +32,6 @@ public class SceneController : MonoBehaviour
 	public void OnStartTimeAttack()
 	{
 		GameManager.Instance.StartTimeAttack();
-		HideAll();
 	}
 
 	public void OnStartNetwork()
@@ -78,7 +77,7 @@ public class SceneController : MonoBehaviour
 		yield return NetworkManager.Instance.AIRequestPost();
 	}
 
-	UIDrived GetUI<UIDrived>(UIType type) where UIDrived : UIBase
+	public UIDrived GetUI<UIDrived>(UIType type) where UIDrived : UIBase
 	{
 		return _GUIs[(int)type] as UIDrived;
 	}
@@ -88,7 +87,6 @@ public class SceneController : MonoBehaviour
 		_w = w;
 		_stage = stage;
 		GameManager.Instance.StartNetwork(_w, _stage);
-		HideAll();
 	}
 
 	public enum UIType
@@ -96,6 +94,7 @@ public class SceneController : MonoBehaviour
 		Titie,
 		Matching,
 		Result,
+		InGame,
 		MAX,
 	}
 }

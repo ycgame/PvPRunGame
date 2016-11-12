@@ -9,10 +9,11 @@ public class MessageInterpreter
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
+		Debug.Log("Recv Message : " + e.Data);
 		var recv = NetworkUtility.FromJson(e.Data);
 		if (!recv.ContainsKey("type"))
 		{
-			Debug.Log("Recv Message : " + e.Data);
+			//Debug.Log("Recv Message : " + e.Data);
 			var message = recv["message"] as Dictionary<string, object>;
 			var args = new MessageInfo()
 			{
