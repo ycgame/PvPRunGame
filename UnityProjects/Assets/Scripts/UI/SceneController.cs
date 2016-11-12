@@ -57,6 +57,13 @@ public class SceneController : MonoBehaviour
 		OnBack();
 	}
 
+	public void OnCancel()
+	{
+		KillAIRequest();
+		NetworkManager.Instance.SendCancel();
+		Show(UIType.Titie, true);
+	}
+
 	public void Show(UIType type, bool isHideOthers = false)
 	{
 		if (isHideOthers)

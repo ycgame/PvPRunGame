@@ -51,6 +51,12 @@ public class NetworkManager : MonoBehaviour
 		Socket.Send(stepJson);
 	}
 
+	public void SendCancel()
+	{
+		string cancelJson = JsonUtility.ToJson (new CancelMessage(), false);
+		Socket.Send(cancelJson);
+	}
+
 	IEnumerator Initialize()
 	{
 		if (SaveManager.ExistUser())
@@ -156,6 +162,8 @@ public class UserInfo
 	public int id;
 	public string name;
 	public string token;
+	public float besttime;
+	public float rating;
 }
 
 public class Subscribe
@@ -169,12 +177,8 @@ public class Channel
 	public string channel = "MatchChannel";
 }
 
-public class MatchMessage
+public class MatchMessage : MessageBase
 {
-	public string data;
-	public string command = "message";
-	public string identifier = JsonUtility.ToJson(new Channel(), false);
-
 	public MatchMessage(UserInfo userInfo)
 	{
 		data = JsonUtility.ToJson(new Data(userInfo), false);
@@ -194,12 +198,8 @@ public class MatchMessage
 	}
 }
 
-public class StepMessage
+public class StepMessage : MessageBase
 {
-	public string data;
-	public string command = "message";
-	public string identifier = JsonUtility.ToJson(new Channel(), false);
-
 	public StepMessage(int s)
 	{
 		data = JsonUtility.ToJson(new Data(s), false);
@@ -215,4 +215,24 @@ public class StepMessage
 			step = s;
 		}
 	}
+}
+
+public class CancelMessage : MessageBase
+{
+	public CancelMessage()
+	{
+		data = JsonUtility.ToJson(new Data(), false);
+	}
+
+	public class Data
+	{
+		public string action = "cancel";
+	}
+}
+
+public class MessageBase
+{
+	public string data;
+	public string command = "message";
+	public string identifier = JsonUtility.ToJson(new Channel(), false);
 }
