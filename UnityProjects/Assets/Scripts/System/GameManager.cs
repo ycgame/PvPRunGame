@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance { get; private set; }
 
 	[SerializeField]
-    Transform _player, _opponent;
+    Transform _player = null, _opponent = null;
 	bool _isNetwork;
     bool _isPlaying;
 
@@ -21,34 +21,42 @@ public class GameManager : MonoBehaviour
 		_opponent.gameObject.SetActive(false);
     }
 
-	public void StartAI()
+	//タイムアタック
+	public void StartTimeAttack()
 	{
 		_isNetwork = false;
 		StartGame();
 	}
 
+	//通信対戦
 	public void StartNetwork(int w, int[] stage)
 	{
 		_isNetwork = true;
 		StartGame(w, stage);
 	}
 
+	//ステージ指定のゲームを開始
 	void StartGame(int w, int[] stage)
 	{
 		OnStartGame();
 		_tileManager.Initialize(w, stage);
 	}
 
+	//ランダムステージのゲームを開始
 	void StartGame()
 	{
 		OnStartGame();
 		_tileManager.Initialize();
 	}
 
+	//ゲームスタート時に絶対呼ばれる
 	void OnStartGame()
 	{
 		_player.gameObject.SetActive(true);
 		_opponent.gameObject.SetActive(_isNetwork);
+		Camera.main.transform.position = 10f * Vector3.back;
+		_player.localPosition = Vector3.zero;
+		_opponent.localPosition = Vector3.zero;
 		_isPlaying = true;
 	}
 

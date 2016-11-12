@@ -2285,7 +2285,6 @@ namespace TMPro
 
         public override void OnSelect(BaseEventData eventData)
         {
-            Debug.Log("OnSelect()");
 
             base.OnSelect(eventData);
             ActivateInputField();
@@ -2340,7 +2339,6 @@ namespace TMPro
 
         public override void OnDeselect(BaseEventData eventData)
         {
-            Debug.Log("OnDeselect()");
             m_HasLostFocus = true;
 
             DeactivateInputField();
@@ -2349,8 +2347,6 @@ namespace TMPro
 
         public virtual void OnSubmit(BaseEventData eventData)
         {
-            Debug.Log("OnSubmit()");
-
             if (!IsActive() || !IsInteractable())
                 return;
 

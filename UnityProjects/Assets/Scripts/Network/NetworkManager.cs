@@ -37,12 +37,25 @@ public class NetworkManager : MonoBehaviour
 		_interpreter.Update();
 	}
 
+
+	public void CreateMatch()
+	{
+		string match = JsonUtility.ToJson (new MatchMessage(Self), false);
+		Socket.Send(match);
+	}
+
+	public void SendStep(int step)
+	{
+		string stepJson = JsonUtility.ToJson (new StepMessage(step), false);
+		Socket.Send(stepJson);
+	}
+
 	public IEnumerator UserCreatePost()
 	{
 		string url = GetURL("users");
 		WWWForm form = new WWWForm();
-		string name = "test" + Random.Range (0, 1000);
-		form.AddField("name", name);
+		string token = "Taichiro0709NaotoSasaki";
+		form.AddField("token", token);
 		WWW www = new WWW(url, form);
 		yield return www;
 
@@ -55,18 +68,8 @@ public class NetworkManager : MonoBehaviour
 
 		string subscribe = JsonUtility.ToJson (new Subscribe(), false);
 		Socket.Send(subscribe);
-	}
 
-	public void CreateMatch()
-	{
-		string match = JsonUtility.ToJson (new Match(Self), false);
-		Socket.Send(match);
-	}
-
-	public void SendStep(int step)
-	{
-		string stepJson = JsonUtility.ToJson (new Step(step), false);
-		Socket.Send(stepJson);
+		SceneController.Instance.Initialize();
 	}
 
 	public IEnumerator AIRequestPost()
@@ -75,6 +78,26 @@ public class NetworkManager : MonoBehaviour
 		WWWForm form = new WWWForm();
 		string token = "Taichiro0709NaotoSasaki";
 		form.AddField("token", token);
+		WWW www = new WWW(url, form);
+		yield return www;
+	}
+
+	public IEnumerator NameUpdatePost(string name)
+	{
+		string url = GetURL("users/"+Self.id.ToString()+"/name");
+		WWWForm form = new WWWForm();
+		form.AddField("name", name);
+		form.AddField("token", Self.token);
+		WWW www = new WWW(url, form);
+		yield return www;
+	}
+
+	public IEnumerator TimeUpdatePost(float time)
+	{
+		string url = GetURL("users/"+Self.id.ToString()+"/time_attack");
+		WWWForm form = new WWWForm();
+		form.AddField("time_attack", time.ToString());
+		form.AddField("token", Self.token);
 		WWW www = new WWW(url, form);
 		yield return www;
 	}
@@ -122,33 +145,33 @@ public class UserInfo
 
 public class Subscribe
 {
-	public string command = "subscribe";
-	public string identifier = JsonUtility.ToJson(new Channel(), false);
+	public readonly string command = "subscribe";
+	public readonly string identifier = JsonUtility.ToJson(new Channel(), false);
 }
 
 public class Channel
 {
-	public string channel = "MatchChannel";
+	public readonly string channel = "MatchChannel";
 }
 
-public class Match
+public class MatchMessage
 {
 	public string data;
-	public string command = "message";
+	public readonly string command = "message";
 	public string identifier = JsonUtility.ToJson(new Channel(), false);
 
-	public Match(UserInfo userInfo)
+	public MatchMessage(UserInfo userInfo)
 	{
-		data = JsonUtility.ToJson(new MatchData(userInfo), false);
+		data = JsonUtility.ToJson(new Data(userInfo), false);
 	}
 
-	public class MatchData
+	public class Data
 	{
 		public int id;
 		public string token;
 		public string action = "match";
 
-		public MatchData(UserInfo userInfo)
+		public Data(UserInfo userInfo)
 		{
 			id = userInfo.id;
 			token = userInfo.token;
@@ -156,23 +179,23 @@ public class Match
 	}
 }
 
-public class Step
+public class StepMessage
 {
 	public string data;
 	public string command = "message";
 	public string identifier = JsonUtility.ToJson(new Channel(), false);
 
-	public Step(int s)
+	public StepMessage(int s)
 	{
-		data = JsonUtility.ToJson(new StepData(s), false);
+		data = JsonUtility.ToJson(new Data(s), false);
 	}
 
-	public class StepData
+	public class Data
 	{
 		public int step;
 		public string action = "step";
 
-		public StepData(int s)
+		public Data(int s)
 		{
 			step = s;
 		}

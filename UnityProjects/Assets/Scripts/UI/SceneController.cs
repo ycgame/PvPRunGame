@@ -11,18 +11,27 @@ public class SceneController : MonoBehaviour
 
 	int _w;
 	int[] _stage;
-	bool _matching;
 
 	void Awake()
 	{
 		Instance = this;
 		Utility.Input.Initialize();
+		HideAll();
+	}
+
+	public void Initialize()
+	{
 		Show(UIType.Titie, true);
+		var title = GetUI<UI_Title>(UIType.Titie);
+		if (title != null)
+		{
+			title.SetName();
+		}
 	}
 
 	public void OnStartTimeAttack()
 	{
-		GameManager.Instance.StartAI();
+		GameManager.Instance.StartTimeAttack();
 		HideAll();
 	}
 
@@ -35,12 +44,12 @@ public class SceneController : MonoBehaviour
 
 	public void OnBack()
 	{
-		SceneManager.LoadScene("Game");
+		Show(UIType.Titie, true);
 	}
 
 	public void OnRestart()
 	{
-		SceneManager.LoadScene("Game");
+		OnBack();
 	}
 
 	public void Show(UIType type, bool isHideOthers = false)
@@ -69,11 +78,15 @@ public class SceneController : MonoBehaviour
 		yield return NetworkManager.Instance.AIRequestPost();
 	}
 
+	UIDrived GetUI<UIDrived>(UIType type) where UIDrived : UIBase
+	{
+		return _GUIs[(int)type] as UIDrived;
+	}
+
 	public void OnCreateTile(int w, int[] stage)
 	{
 		_w = w;
 		_stage = stage;
-		_matching = true;
 		GameManager.Instance.StartNetwork(_w, _stage);
 		HideAll();
 	}

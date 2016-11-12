@@ -4,6 +4,9 @@ public class TileManager : MonoBehaviour
 {
 	int _currentIndex;
 	int[] _correctIndexes;
+	GameObject[,] _tileObjects;
+	[SerializeField]
+	private int _createLength = 50;
 	[SerializeField]
 	private int _length = 50;
 	public int Length { get { return _length; } }
@@ -19,10 +22,27 @@ public class TileManager : MonoBehaviour
 	private GameObject _correnctTilePrefab;
 	private float _tileHeight;
 	private float _tileWidth;
-	private int _stepCount;
 
+	void Awake()
+	{
+		CreateTiles();
+	}
 
 	private void CreateTiles()
+	{
+		_tileObjects = new GameObject[_width,_createLength];
+		for (int j = 0; j < _createLength; j++)
+		{
+			for (int i = 0; i < _width; i++) {
+				var prefab = i==0 ? _correnctTilePrefab : _wrongTilePrefab;
+				GameObject tile = Instantiate(prefab) as GameObject;
+				tile.transform.SetParent(this.transform);
+				_tileObjects[i, j] = tile;
+			}
+		}
+	}
+
+	private void SetTiles()
 	{
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
@@ -31,10 +51,9 @@ public class TileManager : MonoBehaviour
 		_tileHeight = _tileWidth;
 		for (int j = 0; j < _length; j++)
 		{
+			int count = 1;
 			for (int i = 0; i < _width; i++) {
-				var prefab = _correctIndexes[j] == i ? _correnctTilePrefab : _wrongTilePrefab;
-				GameObject tile = Instantiate(prefab) as GameObject;
-				tile.transform.SetParent(this.transform);
+				GameObject tile = i == _correctIndexes[j] ? _tileObjects[0, j] : _tileObjects[count++, j];
 				tile.transform.position = CalcTilePosition(i, j);
 				tile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 			}
@@ -44,12 +63,13 @@ public class TileManager : MonoBehaviour
 
 	public void Initialize()
 	{
+		_currentIndex = 0;
 		_correctIndexes = new int[_length];
 		for (int i = 0; i < _length; i++)
 		{
 			_correctIndexes[i] = Random.Range(0, _width);
 		}
-		CreateTiles();
+		SetTiles();
 	}
 
 	public void Initialize(int w, int[] indexes)
@@ -92,7 +112,8 @@ public class TileManager : MonoBehaviour
 	public Vector3 CalcTilePosition(int step, int stepCnt)
 	{
 		float l = -_tileWidth * ((float)_width / 2 - 0.5f);
-		float b = -_tileHeight * ((float)_height / 2 - 1f);
+		float screenH = 2f * Camera.main.orthographicSize;
+		float b = 2 * _tileHeight - screenH / 2;
 		return new Vector3(l+_tileWidth*step, b+_tileHeight*stepCnt, 0);
 	}
 
