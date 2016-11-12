@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
 		_elapsedTime = 0f;
 		StartCoroutine(CountDown(3));
 	}
-
+	
+	//カウントダウン
 	IEnumerator CountDown(int count)
 	{
 		var ui = SceneController.Instance.GetUI<UI_InGame>(SceneController.UIType.InGame);
@@ -75,11 +76,13 @@ public class GameManager : MonoBehaviour
 		_isPlaying = true;
 	}
 
+	//タップの挙動をとる
 	void Update()
 	{
 		if (_isPlaying == false)
 			return;
 
+		_elapsedTime += Time.deltaTime;
 		if (Utility.Input.TapDown)
 		{
 			Vector2 tapPos = Utility.Input.TapPosition01;
@@ -103,8 +106,10 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void MoveAvator(int step, int stepCnt, bool isPlayer)
+	//アバター動かす
+	void MoveAvator(int step, int stepCnt, PlayerType type)
 	{
+		bool isPlayer = type == PlayerType.Player;
 		Transform avator = isPlayer ? _player : _opponent;
 		avator.DOMove(_tileManager.CalcTilePosition(step, stepCnt), 0.05f).SetEase(Ease.Linear);
 		if (isPlayer)
@@ -113,11 +118,13 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	//通信相手からのステップメッセージ来たとき
 	public void OnStepOppopnent(int step, int stepCnt)
 	{
-		MoveAvator(step, stepCnt, false);
+		MoveAvator(step, stepCnt, PlayerType.Opponent);
 	}
 
+	//したとき呼ばれる
 	public void OnFinishGame()
 	{
 		_isPlaying = false;
@@ -131,12 +138,16 @@ public class GameManager : MonoBehaviour
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
-		MoveAvator(result.step, result.stepCnt, true);
+		if (_isNetwork == false)
+		{
+			NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
+		}
+		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
 	}
 
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
-		MoveAvator(result.step, result.stepCnt, true);
+		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
 		FinishGame();
 	}
 
@@ -151,4 +162,11 @@ public class GameManager : MonoBehaviour
 			OnFinishGame();
 		}
 	}
+}
+
+
+public enum PlayerType
+{
+	Player,
+	Opponent,
 }

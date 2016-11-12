@@ -11,7 +11,7 @@ public class UI_InGame : UIBase
 
 	void OnEnable()
 	{
-		_backgroundImage.enabled = true;
+		SetCountDownActive(true);
 	}
 
 	public void SetCountDownText(int count)
@@ -21,6 +21,12 @@ public class UI_InGame : UIBase
 
 	public void ShowStage()
 	{
-		_backgroundImage.enabled = false;
+		SetCountDownActive(false);
+	}
+
+	void SetCountDownActive(bool value)
+	{
+		_backgroundImage.enabled = value;
+		_countDownText.enabled = value;
 	}
 }
