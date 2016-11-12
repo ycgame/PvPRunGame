@@ -72,13 +72,12 @@ public class TileManager : MonoBehaviour
 
 	public void Initialize()
 	{
-		_currentIndex = 0;
 		_correctIndexes = new int[_length];
 		for (int i = 0; i < _length; i++)
 		{
 			_correctIndexes[i] = Random.Range(0, _width);
 		}
-		SetTiles();
+		InitializeShare();
 	}
 
 	public void Initialize(int w, int[] indexes)
@@ -86,7 +85,13 @@ public class TileManager : MonoBehaviour
 		_width = w;
 		_correctIndexes = indexes;
 		_length = indexes.Length;
-		CreateTiles();
+		InitializeShare();
+	}
+
+	void InitializeShare()
+	{
+		_currentIndex = 0;
+		SetTiles();
 	}
 
 	public TapResult OnTapTile(Vector2 tapPos)

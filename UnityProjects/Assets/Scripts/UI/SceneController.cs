@@ -9,9 +9,6 @@ public class SceneController : MonoBehaviour
 	[SerializeField]
 	UIBase[] _GUIs;
 
-	int _w;
-	int[] _stage;
-
 	void Awake()
 	{
 		Instance = this;
@@ -84,9 +81,7 @@ public class SceneController : MonoBehaviour
 
 	public void OnCreateTile(int w, int[] stage)
 	{
-		_w = w;
-		_stage = stage;
-		GameManager.Instance.StartNetwork(_w, _stage);
+		GameManager.Instance.StartNetwork(w, stage);
 	}
 
 	public enum UIType
