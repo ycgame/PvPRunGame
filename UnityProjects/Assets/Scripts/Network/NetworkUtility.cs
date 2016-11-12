@@ -22,4 +22,14 @@ public static class NetworkUtility
 		}
 		return res;
 	}
+
+	public static bool ObjectToBool(object o)
+	{
+		bool res = false;
+		if (bool.TryParse(o.ToString(), out res) == false)
+		{
+			UnityEngine.Debug.LogError("Error");
+		}
+		return res;
+	}
 }

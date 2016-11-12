@@ -44,6 +44,7 @@ public class TileManager : MonoBehaviour
 
 	private void SetTiles()
 	{
+		HideTile();
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
 		_tileWidth = screenW / _width;
@@ -56,10 +57,18 @@ public class TileManager : MonoBehaviour
 				GameObject tile = i == _correctIndexes[j] ? _tileObjects[0, j] : _tileObjects[count++, j];
 				tile.transform.position = CalcTilePosition(i, j);
 				tile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
+				tile.SetActive(true);
 			}
 		}
 	}
 
+	private void HideTile()
+	{
+		foreach (var tile in _tileObjects)
+		{
+			tile.SetActive(false);
+		}
+	}
 
 	public void Initialize()
 	{

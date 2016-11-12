@@ -29,7 +29,7 @@ public class NetworkManager : MonoBehaviour
 	{
 		Instance = this;
 
-		StartCoroutine(UserCreatePost());
+		StartCoroutine(Initialize());
 	}
 
 	void Update()
@@ -50,7 +50,28 @@ public class NetworkManager : MonoBehaviour
 		Socket.Send(stepJson);
 	}
 
-	public IEnumerator UserCreatePost()
+	IEnumerator Initialize()
+	{
+		if (SaveManager.ExistUser())
+		{
+			Self = SaveManager.LoadUser();
+			yield return null;
+		}
+		else
+		{
+			yield return UserCreatePost();
+			SaveManager.SaveUser();
+		}
+
+		ConnectWebSocket ();
+
+		string subscribe = JsonUtility.ToJson (new Subscribe(), false);
+		Socket.Send(subscribe);
+
+		SceneController.Instance.Initialize();
+	}
+
+	IEnumerator UserCreatePost()
 	{
 		string url = GetURL("users");
 		WWWForm form = new WWWForm();
@@ -63,13 +84,6 @@ public class NetworkManager : MonoBehaviour
 			var json = www.text;
 			Self = JsonUtility.FromJson(json, typeof(UserInfo)) as UserInfo;
 		}
-
-		ConnectWebSocket ();
-
-		string subscribe = JsonUtility.ToJson (new Subscribe(), false);
-		Socket.Send(subscribe);
-
-		SceneController.Instance.Initialize();
 	}
 
 	public IEnumerator AIRequestPost()

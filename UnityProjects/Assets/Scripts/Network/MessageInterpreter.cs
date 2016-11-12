@@ -64,7 +64,9 @@ public class MessageInterpreter
 
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
-		GameManager.Instance.OnFinishGame();
+		bool win = NetworkUtility.ObjectToBool(message["fin"]);
+		PlayerType winner = win ? PlayerType.Player : PlayerType.Opponent;
+		GameManager.Instance.OnFinishGame(winner);
 	}
 
 	public struct MessageInfo

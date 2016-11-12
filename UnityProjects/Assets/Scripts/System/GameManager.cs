@@ -39,15 +39,15 @@ public class GameManager : MonoBehaviour
 	//ステージ指定のゲームを開始
 	void StartGame(int w, int[] stage)
 	{
-		OnStartGame();
 		_tileManager.Initialize(w, stage);
+		OnStartGame();
 	}
 
 	//ランダムステージのゲームを開始
 	void StartGame()
 	{
-		OnStartGame();
 		_tileManager.Initialize();
+		OnStartGame();
 	}
 
 	//ゲームスタート時に絶対呼ばれる
@@ -125,15 +125,31 @@ public class GameManager : MonoBehaviour
 	}
 
 	//したとき呼ばれる
-	public void OnFinishGame()
+	public void OnFinishGame(PlayerType winner = PlayerType.Player)
 	{
 		_isPlaying = false;
 		SceneController.Instance.Show(SceneController.UIType.Result, true);
+		var ui = SceneController.Instance.GetUI<UI_Result>(SceneController.UIType.Result);
+		if (_isNetwork)
+		{
+			ui.ShowOnlineResult(new OnlineResultArgs()
+			{
+				winner = winner,
+			});
+		}
+		else
+		{
+			ui.ShowTimeAttackResult(new TimeAttackResultArgs()
+			{
+				success = winner == PlayerType.Player,
+				time = _elapsedTime,
+			});
+		}
 	}
 
 	void OnFailed(TapResult result, Vector2 tapPos)
 	{
-		FinishGame();
+		FinishGame(false);
 	}
 
 	void OnSuccess(TapResult result, Vector2 tapPos)
@@ -148,10 +164,10 @@ public class GameManager : MonoBehaviour
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
 		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
-		FinishGame();
+		FinishGame(true);
 	}
 
-	void FinishGame()
+	void FinishGame(bool success)
 	{
 		if (_isNetwork)
 		{
@@ -159,7 +175,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			OnFinishGame();
+			OnFinishGame(success ? PlayerType.Player : PlayerType.Opponent);
 		}
 	}
 }

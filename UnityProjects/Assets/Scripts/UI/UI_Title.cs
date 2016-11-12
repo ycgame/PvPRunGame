@@ -12,6 +12,7 @@ public class UI_Title : UIBase
 		NetworkManager.Instance.Self.name = name;
 		StartCoroutine( NetworkManager.Instance.NameUpdatePost(name) );
 		SetName();
+		SaveManager.SaveUser();
 	}
 
 	public void SetName()
