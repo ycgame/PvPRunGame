@@ -13,5 +13,7 @@ namespace Utility
 		bool GetTapDown(int index);
 		bool GetTap(int index);
 		bool GetTapUp(int index);
+		Vector2 GetTapPosition(int index);
+		Vector2 GetTapPosition01(int index);
 	}
 }

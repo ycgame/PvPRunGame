@@ -42,5 +42,15 @@ namespace Utility
 		{
 			return _input.GetTapUp(index);
 		}
+
+		public static Vector2 GetTapPosition(int index)
+		{
+			return _input.GetTapPosition(index);
+		}
+
+		public static Vector2 GetTapPosition01(int index)
+		{
+			return _input.GetTapPosition01(index);
+		}
 	}
 }

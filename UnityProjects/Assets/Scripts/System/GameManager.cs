@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 		{
 			if (Utility.Input.GetTapDown(i))
 			{
-				Vector2 tapPos = Utility.Input.TapPosition01;
+				Vector2 tapPos = Utility.Input.GetTapPosition01(i);
 				var result = _tileManager.OnTapTile(tapPos);
 				if (IsNetwork)
 				{

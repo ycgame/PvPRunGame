@@ -77,5 +77,19 @@ namespace Utility
 			else
 				return UnityEngine.Input.GetMouseButtonUp(index);
 		}
+
+		public Vector2 GetTapPosition(int index)
+		{
+			if (index < 0 || index >= UnityEngine.Input.touchCount)
+				return Vector2.zero;
+			else
+				return UnityEngine.Input.mousePosition;
+		}
+
+		public Vector2 GetTapPosition01(int index)
+		{
+			Vector2 p = GetTapPosition(index);
+			return new Vector2(p.x / Screen.width, p.y / Screen.height);
+		}
 	}
 }
