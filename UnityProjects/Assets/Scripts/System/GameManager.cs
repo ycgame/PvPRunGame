@@ -55,9 +55,13 @@ public class GameManager : MonoBehaviour
 	{
 		_player.gameObject.SetActive(true);
 		_opponent.gameObject.SetActive(IsNetwork);
-		Camera.main.transform.position = 10f * Vector3.back;
 		_player.localPosition = Vector3.zero;
 		_opponent.localPosition = Vector3.zero;
+		_player.localScale = _tileManager.CalcTileScale();
+		_opponent.localScale = _tileManager.CalcTileScale();
+
+		Camera.main.transform.position = 10f * Vector3.back;
+
 		_elapsedTime = 0f;
 		StartCoroutine(CountDown(3));
 	}
@@ -175,16 +179,21 @@ public class GameManager : MonoBehaviour
 	void OnSuccess(TapResult result, Vector2 tapPos)
 	{
 		SoundManager.Instance.PlaySE(SEType.CorrectTap);
-		if (IsNetwork == false)
-		{
-			NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
-		}
 	}
 
 	//ゴール
 	void OnClear(TapResult result, Vector2 tapPos)
 	{
 		SoundManager.Instance.PlaySE(SEType.CorrectTap);
+		if (IsNetwork == false)
+		{
+			if (NetworkManager.Instance.Self.time_attack < _elapsedTime) 
+			{
+				NetworkManager.Instance.Self.time_attack = _elapsedTime;
+				NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
+				SaveManager.SaveUser ();
+			}
+		}
 		FinishGame(true);
 	}
 

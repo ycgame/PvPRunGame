@@ -61,8 +61,8 @@ public class TileManager : MonoBehaviour
 		float screenH = 2f * Camera.main.orthographicSize;
 		float screenW = screenH * Camera.main.aspect;
 		_tileWidth = screenW / _width;
-		//_tileHeight = screenH / (_height+1);
 		_tileHeight = _tileWidth;
+		//_tileHeight = screenH / (_height+1);
 		for (int j = 0; j < _length; j++)
 		{
 			int count = 1;
@@ -70,13 +70,13 @@ public class TileManager : MonoBehaviour
 				bool correct = i == _correctIndexes[j];
 				GameObject tile = correct ? _tileObjects[0, j] : _tileObjects[count++, j];
 				tile.transform.position = CalcTilePosition(i, j);
-				tile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
+				tile.transform.localScale = CalcTileScale();
 				tile.SetActive(true);
 				if (correct)
 				{
 					GameObject afterTile = _afterTileObjects[j];
 					afterTile.transform.position = CalcTilePosition(i, j);
-					afterTile.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
+					afterTile.transform.localScale = CalcTileScale();
 				}
 			}
 		}
@@ -158,6 +158,11 @@ public class TileManager : MonoBehaviour
 		float screenH = 2f * Camera.main.orthographicSize;
 		float b = 2 * _tileHeight - screenH / 2;
 		return new Vector3(l+_tileWidth*step, b+_tileHeight*stepCnt, 0);
+	}
+
+	public Vector3 CalcTileScale()
+	{
+		return new Vector3(_tileWidth, _tileHeight, 1);
 	}
 
 	public float CalcCameraY(int stepCnt)
