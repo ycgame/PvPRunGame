@@ -8,7 +8,7 @@ public class UI_Ranking : UIBase
 	{
 		StartCoroutine (DisplayRanking());
 	}
-
+	
 	IEnumerator DisplayRanking()
 	{
 		yield return NetworkManager.Instance.GetRankingInfo ();
