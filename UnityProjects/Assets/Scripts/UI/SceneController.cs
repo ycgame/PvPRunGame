@@ -44,6 +44,7 @@ public class SceneController : MonoBehaviour
 	public void OnRanking()
 	{
 		SoundManager.Instance.PlaySE(SEType.ButtonClick);
+		Show(UIType.Ranking, true);
 	}
 
 	public void OnBack()
@@ -54,7 +55,13 @@ public class SceneController : MonoBehaviour
 
 	public void OnRestart()
 	{
-		OnBack();
+		if (GameManager.Instance.IsNetwork) 
+		{
+			OnStartNetwork ();
+		} else 
+		{
+			OnStartTimeAttack ();
+		}
 	}
 
 	public void OnCancel()
@@ -111,6 +118,7 @@ public class SceneController : MonoBehaviour
 		Matching,
 		Result,
 		InGame,
+		Ranking,
 		MAX,
 	}
 }

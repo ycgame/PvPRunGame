@@ -13,6 +13,7 @@ public class NetworkManager : MonoBehaviour
 	public UserInfo Self { get; private set; }
 	public UserInfo Opponent { get; set; }
 	public WebSocket Socket { get; private set; }
+	public Dictionary<string, object> RankingInfo { get; private set; }
 
 	private MessageInterpreter _interpreter = new MessageInterpreter();
 
@@ -95,6 +96,19 @@ public class NetworkManager : MonoBehaviour
 			Debug.LogFormat ("token : {0}", Self.token);
 			Debug.LogFormat ("rate : {0}", Self.rate);
 			Debug.LogFormat ("time : {0}", Self.time_attack);
+		}
+	}
+
+	public IEnumerator GetRankingInfo()
+	{
+		//http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/users/157/ranking?token=token
+		string url = GetURL("users/"+Self.id.ToString()+"/ranking?token="+Self.token);
+		WWW www = new WWW(url);
+		yield return www;
+
+		if (www.error == null) {
+			var json = www.text;
+			RankingInfo = NetworkUtility.FromJson (www.text);
 		}
 	}
 
