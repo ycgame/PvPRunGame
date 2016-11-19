@@ -91,11 +91,7 @@ public class NetworkManager : MonoBehaviour
 		if (www.error == null) {
 			var json = www.text;
 			Self = JsonUtility.FromJson(json, typeof(UserInfo)) as UserInfo;
-			Debug.LogFormat ("id : {0}", Self.id);
-			Debug.LogFormat ("name : {0}", Self.name);
-			Debug.LogFormat ("token : {0}", Self.token);
-			Debug.LogFormat ("rate : {0}", Self.rate);
-			Debug.LogFormat ("time : {0}", Self.time_attack);
+			Debug.Log (json);
 		}
 	}
 

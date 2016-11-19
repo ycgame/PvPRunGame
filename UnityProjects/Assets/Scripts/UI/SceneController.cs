@@ -8,6 +8,7 @@ public class SceneController : MonoBehaviour
 
 	[SerializeField]
 	UIBase[] _GUIs;
+	UIType _currentType;
 
 	void Awake()
 	{
@@ -16,6 +17,28 @@ public class SceneController : MonoBehaviour
 		HideAll();
 	}
 
+#if UNITY_ANDROID || UNITY_IOS
+	void Update()
+	{
+		if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+		{
+			switch(_currentType)
+			{
+			case UIType.Titie:
+				Application.Quit();
+				break;
+			case UIType.Matching:
+				OnCancel();
+				break;
+			case UIType.Result:
+			case UIType.Ranking:
+				OnBack();
+				break;
+			}
+		}
+	}
+#endif
+
 	public void Initialize()
 	{
 		SoundManager.Instance.PlayBGM(BGMType.Menu);
@@ -23,7 +46,7 @@ public class SceneController : MonoBehaviour
 		var title = GetUI<UI_Title>(UIType.Titie);
 		if (title != null)
 		{
-			title.SetName();
+			title.SetInfo();
 		}
 	}
 
@@ -76,6 +99,7 @@ public class SceneController : MonoBehaviour
 		if (isHideOthers)
 			HideAll();
 		_GUIs[(int)type].SetActive(true);
+		_currentType = type;
 	}
 
 	public void Hide(UIType type)

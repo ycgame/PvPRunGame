@@ -33,3 +33,7 @@ public static class NetworkUtility
 		return res;
 	}
 }
+
+public class MyJson : Dictionary<string, object>
+{
+}
