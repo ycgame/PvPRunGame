@@ -17,7 +17,6 @@ public class SceneController : MonoBehaviour
 		HideAll();
 	}
 
-#if UNITY_ANDROID || UNITY_IOS
 	void Update()
 	{
 		if(UnityEngine.Input.GetKeyDown(KeyCode.Escape))
@@ -37,7 +36,6 @@ public class SceneController : MonoBehaviour
 			}
 		}
 	}
-#endif
 
 	public void Initialize()
 	{
