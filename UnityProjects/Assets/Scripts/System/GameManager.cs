@@ -192,6 +192,8 @@ public class GameManager : MonoBehaviour
 				NetworkManager.Instance.Self.time_attack = _elapsedTime;
 				NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
 				SaveManager.SaveUser ();
+				var title = SceneController.Instance.GetUI<UI_Title>(SceneController.UIType.Titie);
+				title.SetRank();
 			}
 		}
 		FinishGame(true);
