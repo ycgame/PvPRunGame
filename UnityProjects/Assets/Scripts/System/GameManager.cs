@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.PlaySE(SEType.CorrectTap);
 		if (IsNetwork == false)
 		{
-			if (NetworkManager.Instance.Self.time_attack < _elapsedTime) 
+			if (NetworkManager.Instance.Self.time_attack > _elapsedTime) 
 			{
 				NetworkManager.Instance.Self.time_attack = _elapsedTime;
 				NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
