@@ -19,6 +19,9 @@ public class UI_Ranking : UIBase
 	{
 		yield return NetworkManager.Instance.GetRankingInfo ();
 		var rankingInfo = NetworkManager.Instance.RankingInfo;
+		if(rankingInfo == null)
+			yield break;
+			
 		var timeInfo = rankingInfo["time_attack"] as Dictionary<string, object>;
 		_timeRank = NetworkUtility.ObjectToInt(timeInfo["rank"]);
 		var timeTop10 = timeInfo["top10"] as List<object>;

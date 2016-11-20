@@ -7,10 +7,10 @@ using MiniJSON;
 public class NetworkManager : MonoBehaviour
 {
 	
-	private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
-	//private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
-	private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
-	//private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
+	//private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
+	//private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
+	private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
+	private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
 	public static NetworkManager Instance { get; private set; }
 
 	public UserInfo Self { get; private set; }

@@ -72,6 +72,9 @@ public class MessageInterpreter
 
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
+		var userInfo = message["user"] as Dictionary<string, object>;
+		NetworkManager.Instance.Self.rate = NetworkUtility.ObjectToInt(userInfo["rate"]);
+		SaveManager.SaveUser();
 		bool win = NetworkUtility.ObjectToBool(message["fin"]);
 		PlayerType winner = win ? PlayerType.Player : PlayerType.Opponent;
 		GameManager.Instance.OnFinishGame(winner);

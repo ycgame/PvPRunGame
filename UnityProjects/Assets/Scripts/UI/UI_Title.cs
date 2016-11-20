@@ -15,6 +15,11 @@ public class UI_Title : UIBase
 	TextMeshProUGUI _timeText;
 	[SerializeField]
 	TextMeshProUGUI _timeRankText;
+	
+	void OnEnable()
+	{
+		SetInfo();
+	}
 
 	public void OnUpdateName(string name)
 	{
@@ -43,6 +48,9 @@ public class UI_Title : UIBase
 		yield return NetworkManager.Instance.GetRankingInfo ();
 		
 		var rankingInfo = NetworkManager.Instance.RankingInfo;
+		if(rankingInfo == null)
+			yield break;
+			
 		var timeInfo = rankingInfo["time_attack"] as Dictionary<string, object>;
 		var timeRank = NetworkUtility.ObjectToInt(timeInfo["rank"]);
 		_timeRankText.text = timeRank.ToString()+"位";

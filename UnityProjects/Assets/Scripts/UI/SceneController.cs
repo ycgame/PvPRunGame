@@ -41,11 +41,6 @@ public class SceneController : MonoBehaviour
 	{
 		SoundManager.Instance.PlayBGM(BGMType.Menu);
 		Show(UIType.Titie, true);
-		var title = GetUI<UI_Title>(UIType.Titie);
-		if (title != null)
-		{
-			title.SetInfo();
-		}
 	}
 
 	public void OnStartTimeAttack()

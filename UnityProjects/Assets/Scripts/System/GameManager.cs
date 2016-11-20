@@ -95,25 +95,51 @@ public class GameManager : MonoBehaviour
 			if (Utility.Input.GetTapDown(i))
 			{
 				Vector2 tapPos = Utility.Input.GetTapPosition01(i);
-				var result = _tileManager.OnTapTile(tapPos);
-				if (IsNetwork)
-				{
-					NetworkManager.Instance.SendStep(result.step);
-				}
-				MoveAvator(result.step, result.stepCnt, PlayerType.Player);
-				switch (result.type)
-				{
-					case TapResult.Type.Failed:
-						OnFailed(result, tapPos);
-						break;
-					case TapResult.Type.Success:
-						OnSuccess(result, tapPos);
-						break;
-					case TapResult.Type.Clear:
-						OnClear(result, tapPos);
-						break;
-				}
+				OnTap(tapPos);
 			}
+		}
+		
+		if (Input.GetKeyDown(KeyCode.Q))
+		{
+			Vector2 tapPos = new Vector2(0.125f, 0f);
+			OnTap(tapPos);
+		}
+		if (Input.GetKeyDown(KeyCode.W))
+		{
+			Vector2 tapPos = new Vector2(0.125f+0.25f, 0f);
+			OnTap(tapPos);
+		}
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			Vector2 tapPos = new Vector2(0.125f+0.25f*2, 0f);
+			OnTap(tapPos);
+		}
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			Vector2 tapPos = new Vector2(0.125f+0.25f*3, 0f);
+			OnTap(tapPos);
+		}
+	}
+
+	void OnTap(Vector2 tapPos)
+	{
+		var result = _tileManager.OnTapTile(tapPos);
+		if (IsNetwork)
+		{
+			NetworkManager.Instance.SendStep(result.step);
+		}
+		MoveAvator(result.step, result.stepCnt, PlayerType.Player);
+		switch (result.type)
+		{
+			case TapResult.Type.Failed:
+				OnFailed(result, tapPos);
+				break;
+			case TapResult.Type.Success:
+				OnSuccess(result, tapPos);
+				break;
+			case TapResult.Type.Clear:
+				OnClear(result, tapPos);
+				break;
 		}
 	}
 
@@ -192,8 +218,6 @@ public class GameManager : MonoBehaviour
 				NetworkManager.Instance.Self.time_attack = _elapsedTime;
 				NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
 				SaveManager.SaveUser ();
-				var title = SceneController.Instance.GetUI<UI_Title>(SceneController.UIType.Titie);
-				title.SetRank();
 			}
 		}
 		FinishGame(true);
