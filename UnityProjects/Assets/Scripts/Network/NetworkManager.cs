@@ -6,8 +6,11 @@ using MiniJSON;
 
 public class NetworkManager : MonoBehaviour
 {
-	private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
-	private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
+	
+	private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
+	//private readonly string URL = "http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
+	private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/";
+	//private readonly string WSURL = "ws://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com/";
 	public static NetworkManager Instance { get; private set; }
 
 	public UserInfo Self { get; private set; }
@@ -91,20 +94,18 @@ public class NetworkManager : MonoBehaviour
 		if (www.error == null) {
 			var json = www.text;
 			Self = JsonUtility.FromJson(json, typeof(UserInfo)) as UserInfo;
-			Debug.Log (json);
 		}
 	}
 
 	public IEnumerator GetRankingInfo()
 	{
-		//http://ec2-54-250-144-197.ap-northeast-1.compute.amazonaws.com:3000/users/157/ranking?token=token
 		string url = GetURL("users/"+Self.id.ToString()+"/ranking?token="+Self.token);
 		WWW www = new WWW(url);
 		yield return www;
 
 		if (www.error == null) {
 			var json = www.text;
-			RankingInfo = NetworkUtility.FromJson (www.text);
+			RankingInfo = NetworkUtility.FromJson (json) as Dictionary<string, object>;
 		}
 	}
 

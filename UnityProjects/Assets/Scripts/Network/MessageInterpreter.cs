@@ -14,7 +14,7 @@ public class MessageInterpreter
 		if (!recv.ContainsKey("type"))
 		{
 			//Debug.Log("Recv Message : " + e.Data);
-			var message = recv["message"] as MyJson;
+			var message = recv["message"] as Dictionary<string, object>;
 			var args = new MessageInfo()
 			{
 				message = message,
@@ -49,10 +49,10 @@ public class MessageInterpreter
 		}
 	}
 
-	void RecvMatchMessage(MyJson message, object sender, MessageEventArgs e)
+	void RecvMatchMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		var stage = message["stage"] as List<object>;
-		var opponentInfo = message["matched"] as MyJson;
+		var opponentInfo = message["matched"] as Dictionary<string, object>;
 		NetworkManager.Instance.Opponent = new UserInfo()
 		{
 			id = -1,
@@ -63,14 +63,14 @@ public class MessageInterpreter
 		SceneController.Instance.OnCreateTile(4, stage.Select(x => NetworkUtility.ObjectToInt(x)).ToArray());
 	}
 
-	void RecvStepMessage(MyJson message, object sender, MessageEventArgs e)
+	void RecvStepMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		int step = NetworkUtility.ObjectToInt(message["step"]);
 		int stepCnt = NetworkUtility.ObjectToInt(message["step_count"]);
 		GameManager.Instance.OnStepOppopnent(step, stepCnt);
 	}
 
-	void RecvFinishMessage(MyJson message, object sender, MessageEventArgs e)
+	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		bool win = NetworkUtility.ObjectToBool(message["fin"]);
 		PlayerType winner = win ? PlayerType.Player : PlayerType.Opponent;
@@ -80,7 +80,7 @@ public class MessageInterpreter
 	public struct MessageInfo
 	{
 		public string type;
-		public MyJson message;
+		public Dictionary<string, object> message;
 		public object sender;
 		public MessageEventArgs args;
 	}
