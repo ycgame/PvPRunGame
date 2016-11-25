@@ -15,6 +15,8 @@ public class UI_Title : UIBase
 	TextMeshProUGUI _timeText;
 	[SerializeField]
 	TextMeshProUGUI _timeRankText;
+	[SerializeField]
+	TextMeshProUGUI _volumeText;
 	
 	void OnEnable()
 	{
@@ -64,5 +66,11 @@ public class UI_Title : UIBase
 	{
 		SetName();
 		SetRank();
+	}
+
+	public void OnVolume()
+	{
+		SoundManager.Instance.SwitchVolume();
+		_volumeText.text = SoundManager.Instance.IsEnabled ? "ON": "OFF";
 	}
 }
