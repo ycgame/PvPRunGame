@@ -3,12 +3,15 @@ using NendUnityPlugin.AD;
 
 public class AdManager : MonoBehaviour 
 {
+	public static AdManager Instance { get; private set; }
+	
 	[SerializeField]
 	NendAdBanner[] _banners;
 	int _index;
 	
 	void Awake()
 	{
+		Instance = this;
 		if(_banners == null)
 			return;
 

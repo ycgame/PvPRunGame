@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
 		_opponent.localPosition = Vector3.zero;
 		_player.localScale = _tileManager.CalcTileScale();
 		_opponent.localScale = _tileManager.CalcTileScale();
+		AdManager.Instance.Hide();
 
 		Camera.main.transform.position = 10f * Vector3.back;
 
@@ -167,6 +168,7 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.StopBGM();
 		_isPlaying = false;
 		StartCoroutine(FinishCoroutine(winner));
+		AdManager.Instance.Show();
 	}
 
 	IEnumerator FinishCoroutine(PlayerType winner)
