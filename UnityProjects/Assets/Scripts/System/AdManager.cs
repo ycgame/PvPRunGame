@@ -16,13 +16,9 @@ public class AdManager : MonoBehaviour
 			return;
 
 		_index = Random.Range(0, _banners.Length);
-		foreach(var banner in _banners)
-		{
-			banner.Hide();
-		}
-		_banners[_index].Show();
+		_banners[_index].AdLoaded += (sender, e) => Show();
 	}
-
+	
 	public void Show()
 	{
 		_banners[_index].Show();
