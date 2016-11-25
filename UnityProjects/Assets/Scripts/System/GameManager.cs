@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
 		_opponent.localPosition = Vector3.zero;
 		_player.localScale = _tileManager.CalcTileScale();
 		_opponent.localScale = _tileManager.CalcTileScale();
+		_diffImage.SetScale(_tileManager.CalcTileScale());
+		_diffImage.SetActive(false);
 		AdManager.Instance.Hide();
 
 		Camera.main.transform.position = 10f * Vector3.back;

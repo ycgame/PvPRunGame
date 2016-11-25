@@ -16,6 +16,7 @@ public class DiffImage : MonoBehaviour
 	
 	public void SetScale(Vector3 scale)
 	{
+		transform.localScale = scale;
 	}
 	
 	public void SetActive(bool value)
