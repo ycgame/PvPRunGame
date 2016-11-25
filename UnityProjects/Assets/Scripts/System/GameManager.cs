@@ -8,9 +8,12 @@ public class GameManager : MonoBehaviour
 
 	[SerializeField]
     Transform _player = null, _opponent = null;
+	[SerializeField]
+	DiffImage _diffImage;
 	public bool IsNetwork { get; private set; }
     bool _isPlaying;
     float _elapsedTime;
+	int _playerStepCnt, _opponentStepCnt;
 
     TileManager _tileManager;
 
@@ -64,6 +67,9 @@ public class GameManager : MonoBehaviour
 		Camera.main.transform.position = 10f * Vector3.back;
 
 		_elapsedTime = 0f;
+		_playerStepCnt = 0;
+		_opponentStepCnt = 0;
+		StopAllCoroutines();
 		StartCoroutine(CountDown(3));
 	}
 	
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour
 			}
 		}
 		
+		#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Q))
 		{
 			Vector2 tapPos = new Vector2(0.125f, 0f);
@@ -120,6 +127,7 @@ public class GameManager : MonoBehaviour
 			Vector2 tapPos = new Vector2(0.125f+0.25f*3, 0f);
 			OnTap(tapPos);
 		}
+		#endif
 	}
 
 	void OnTap(Vector2 tapPos)
@@ -152,8 +160,35 @@ public class GameManager : MonoBehaviour
 		avator.DOMove(_tileManager.CalcTilePosition(step, stepCnt), 0.05f).SetEase(Ease.Linear);
 		if (isPlayer)
 		{
-			Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(stepCnt), 0.05f);
+			OnMovePlayer(step, stepCnt);
 		}
+		else
+		{
+			OnMoveOpponent(step, stepCnt);
+		}
+		SetDiffImage(step);
+	}
+
+	void OnMovePlayer(int step, int stepCnt)
+	{
+		Camera.main.transform.DOMoveY(_tileManager.CalcCameraY(stepCnt), 0.05f);
+		_playerStepCnt = stepCnt;
+	}
+
+	void OnMoveOpponent(int step, int stepCnt)
+	{
+		_opponentStepCnt = stepCnt;
+	}
+
+	void SetDiffImage(int step)
+	{
+		if(IsNetwork == false)
+			return;
+			
+		int diff = _playerStepCnt - _opponentStepCnt;
+		var _opponentRenderer = _opponent.GetComponentInChildren<SpriteRenderer>();
+		_diffImage.SetActive(_opponentRenderer.isVisible == false);
+		_diffImage.SetImage(_tileManager.CalcTilePosition(step, 0).x, diff);
 	}
 
 	//通信相手からのステップメッセージ来たとき
