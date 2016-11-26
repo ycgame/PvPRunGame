@@ -18,3 +18,9 @@ public class TImeAttackResult : MonoBehaviour
 		}
 	}
 }
+
+public struct TimeAttackResultArgs
+{
+	public bool success;
+	public float time;
+}

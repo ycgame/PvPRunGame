@@ -23,7 +23,7 @@ public static class SaveManager
 		PlayerPrefs.SetInt(KEY_USERID, NetworkManager.Instance.Self.id);
 		PlayerPrefs.SetString(KEY_USERNAME, NetworkManager.Instance.Self.name);
 		PlayerPrefs.SetString(KEY_USERTOKEN, NetworkManager.Instance.Self.token);
-		PlayerPrefs.SetFloat(KEY_USERRATE, NetworkManager.Instance.Self.rate);
+		PlayerPrefs.SetInt(KEY_USERRATE, NetworkManager.Instance.Self.rate);
 		PlayerPrefs.SetFloat(KEY_USERTIME, NetworkManager.Instance.Self.time_attack);
 		PlayerPrefs.Save();
 	}
@@ -35,7 +35,7 @@ public static class SaveManager
 			id = PlayerPrefs.GetInt(KEY_USERID),
 			name = PlayerPrefs.GetString(KEY_USERNAME),
 			token = PlayerPrefs.GetString(KEY_USERTOKEN),
-			rate = PlayerPrefs.GetFloat(KEY_USERRATE),
+			rate = PlayerPrefs.GetInt(KEY_USERRATE),
 			time_attack = PlayerPrefs.GetFloat(KEY_USERTIME),
 		};
 	}

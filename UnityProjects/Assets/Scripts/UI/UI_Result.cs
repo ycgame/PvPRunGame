@@ -24,16 +24,3 @@ public class UI_Result : UIBase
 		_onlinePanel.ShowResult(args);
 	}
 }
-
-public struct TimeAttackResultArgs
-{
-	public bool success;
-	public float time;
-}
-
-public struct OnlineResultArgs
-{
-	public PlayerType winner;
-	public string opponentName;
-	public float rate;
-}

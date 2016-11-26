@@ -178,7 +178,7 @@ public class UserInfo
 	public int id;
 	public string name;
 	public string token;
-	public float rate = -1;
+	public int rate = -1;
 	public float time_attack = -1;
 }
 

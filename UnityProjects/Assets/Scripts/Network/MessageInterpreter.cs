@@ -9,11 +9,10 @@ public class MessageInterpreter
 
 	public void OnRecvMessage(object sender, MessageEventArgs e)
 	{
-		Debug.Log("Recv Message : " + e.Data);
 		var recv = NetworkUtility.FromJson(e.Data);
 		if (!recv.ContainsKey("type"))
 		{
-			//Debug.Log("Recv Message : " + e.Data);
+			Debug.Log("Recv Message : " + e.Data);
 			var message = recv["message"] as Dictionary<string, object>;
 			var args = new MessageInfo()
 			{
@@ -73,11 +72,22 @@ public class MessageInterpreter
 	void RecvFinishMessage(Dictionary<string, object> message, object sender, MessageEventArgs e)
 	{
 		var userInfo = message["user"] as Dictionary<string, object>;
-		NetworkManager.Instance.Self.rate = NetworkUtility.ObjectToInt(userInfo["rate"]);
+		var opponentInfo = message["matched"] as Dictionary<string, object>;
+		var prevRate = NetworkManager.Instance.Self.rate;
+		var rate = NetworkUtility.ObjectToInt(userInfo["rate"]);
+		NetworkManager.Instance.Self.rate = rate;
 		SaveManager.SaveUser();
 		bool win = NetworkUtility.ObjectToBool(message["fin"]);
 		PlayerType winner = win ? PlayerType.Player : PlayerType.Opponent;
 		GameManager.Instance.OnFinishGame(winner);
+		GameManager.Instance.OnlineArgs = new OnlineResultArgs()
+		{
+			winner = win ? PlayerType.Player : PlayerType.Opponent,
+			factor = (string)message["msg"],
+			opponentName = (string)opponentInfo["name"],
+			rate = rate,
+			prevRate = prevRate,
+		};
 	}
 
 	public struct MessageInfo

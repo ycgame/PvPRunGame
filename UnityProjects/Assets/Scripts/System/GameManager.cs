@@ -5,6 +5,7 @@ using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance { get; private set; }
+	public OnlineResultArgs OnlineArgs { get; set; }
 
 	[SerializeField]
     Transform _player = null, _opponent = null;
@@ -216,10 +217,7 @@ public class GameManager : MonoBehaviour
 		var ui = SceneController.Instance.GetUI<UI_Result>(SceneController.UIType.Result);
 		if (IsNetwork)
 		{
-			ui.ShowOnlineResult(new OnlineResultArgs()
-			{
-				winner = winner,
-			});
+			ui.ShowOnlineResult(OnlineArgs);
 		}
 		else
 		{
