@@ -255,7 +255,7 @@ public class GameManager : MonoBehaviour
 			if (NetworkManager.Instance.Self.time_attack > _elapsedTime) 
 			{
 				NetworkManager.Instance.Self.time_attack = _elapsedTime;
-				NetworkManager.Instance.TimeUpdatePost(_elapsedTime);
+				StartCoroutine(NetworkManager.Instance.TimeUpdatePost(_elapsedTime));
 				SaveManager.SaveUser ();
 			}
 		}
