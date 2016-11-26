@@ -1,39 +1,27 @@
 ﻿using UnityEngine;
-using TMPro;
 
 public class UI_Result : UIBase
 {
 	[Header("タイムアタック")]
 	[SerializeField]
-	GameObject _timeAttackPanel;
-	[SerializeField]
-	TextMeshProUGUI _clearTimeText;
+	TImeAttackResult _timeAttackPanel;
 
 	[Header("オンライン")]
 	[SerializeField]
-	GameObject _onlinePanel;
-	[SerializeField]
-	TextMeshProUGUI _winnerText;
+	OnlineResult _onlinePanel;
 
 	public void ShowTimeAttackResult(TimeAttackResultArgs args)
 	{
-		_timeAttackPanel.SetActive(true);
-		_onlinePanel.SetActive(false);
-		if (args.success)
-		{
-			_clearTimeText.text = args.time.ToString();
-		}
-		else
-		{
-			_clearTimeText.text = "miss";
-		}
+		_timeAttackPanel.gameObject.SetActive(true);
+		_onlinePanel.gameObject.SetActive(false);
+		_timeAttackPanel.ShowResult(args);
 	}
 
 	public void ShowOnlineResult(OnlineResultArgs args)
 	{
-		_timeAttackPanel.SetActive(false);
-		_onlinePanel.SetActive(true);
-		_winnerText.text = args.winner == PlayerType.Player ? "win" : "lose";
+		_timeAttackPanel.gameObject.SetActive(false);
+		_onlinePanel.gameObject.SetActive(true);
+		_onlinePanel.ShowResult(args);
 	}
 }
 
