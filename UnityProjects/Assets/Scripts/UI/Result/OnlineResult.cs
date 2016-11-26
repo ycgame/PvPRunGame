@@ -27,7 +27,7 @@ public class OnlineResult : MonoBehaviour
 		_prevRateText.text = args.prevRate.ToString();
 		_rateText.text = args.rate.ToString();
 		var diff = args.rate - args.prevRate;
-		var sign = diff > 0 ? "+" : "-";
+		var sign = diff > 0 ? "+" : "";
 		_diffText.text = sign + diff.ToString();
 	}
 }
