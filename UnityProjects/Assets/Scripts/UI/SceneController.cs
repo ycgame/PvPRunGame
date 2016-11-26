@@ -14,7 +14,7 @@ public class SceneController : MonoBehaviour
 	{
 		Instance = this;
 		Utility.Input.Initialize();
-		HideAll();
+		Show(UIType.Loading, true);
 	}
 
 	void Update()
@@ -136,6 +136,7 @@ public class SceneController : MonoBehaviour
 		Result,
 		InGame,
 		Ranking,
+		Loading,
 		MAX,
 	}
 }
