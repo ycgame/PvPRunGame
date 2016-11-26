@@ -79,15 +79,15 @@ public class MessageInterpreter
 		SaveManager.SaveUser();
 		bool win = NetworkUtility.ObjectToBool(message["fin"]);
 		PlayerType winner = win ? PlayerType.Player : PlayerType.Opponent;
-		GameManager.Instance.OnFinishGame(winner);
 		GameManager.Instance.OnlineArgs = new OnlineResultArgs()
 		{
-			winner = win ? PlayerType.Player : PlayerType.Opponent,
+			winner = winner,
 			factor = (string)message["msg"],
 			opponentName = (string)opponentInfo["name"],
 			rate = rate,
 			prevRate = prevRate,
 		};
+		GameManager.Instance.OnFinishGame(winner);
 	}
 
 	public struct MessageInfo
