@@ -5,6 +5,10 @@ using System.Linq;
 
 public class UI_Ranking : UIBase
 {
+	[SerializeField]
+	RatingRankList _rateRankInfoList;
+	[SerializeField]
+	TimeAttackRankList _timeRankInfoList;
 	int _timeRank;
 	List<Dictionary<string, object>> _timeRank10 = new List<Dictionary<string, object>>(10);
 	int _rateRank;
@@ -13,6 +17,11 @@ public class UI_Ranking : UIBase
 	void OnEnable()
 	{
 		StartCoroutine (DisplayRanking());
+	}
+
+	void OnDisable()
+	{
+		StopAllCoroutines();
 	}
 	
 	IEnumerator DisplayRanking()
@@ -31,6 +40,9 @@ public class UI_Ranking : UIBase
 		_rateRank = NetworkUtility.ObjectToInt(rateInfo["rank"]);
 		var rateTop10 = rateInfo["top10"] as List<object>;
 		_rateRank10 = rateTop10.Select(x => x as Dictionary<string, object>).ToList();
+
+		_timeRankInfoList.SetRankingInfo(_timeRank10);
+		_rateRankInfoList.SetRankingInfo(_rateRank10);
 	}
 }
 	

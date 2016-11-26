@@ -23,6 +23,16 @@ public static class NetworkUtility
 		return res;
 	}
 
+	public static float ObjectToFloat(object o)
+	{
+		float res = -1;
+		if (float.TryParse(o.ToString(), out res) == false)
+		{
+			UnityEngine.Debug.LogError("Error");
+		}
+		return res;
+	}
+
 	public static bool ObjectToBool(object o)
 	{
 		bool res = false;
