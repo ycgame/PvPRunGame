@@ -57,6 +57,7 @@ public class MessageInterpreter
 			id = -1,
 			name = (string)opponentInfo["name"],
 			token = "dummy",
+			rate = NetworkUtility.ObjectToInt(opponentInfo["rate"])
 		};
 		SceneController.Instance.KillAIRequest();
 		SceneController.Instance.OnCreateTile(4, stage.Select(x => NetworkUtility.ObjectToInt(x)).ToArray());

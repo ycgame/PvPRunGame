@@ -11,6 +11,10 @@ public class UI_InGame : UIBase
 	[SerializeField]
 	TextMeshProUGUI _opponentNameText;
 	[SerializeField]
+	TextMeshProUGUI _playerRateText;
+	[SerializeField]
+	TextMeshProUGUI _opponentRateText;
+	[SerializeField]
 	TextMeshProUGUI _countDownText;
 
 	TextMeshProUGUI[] _texts;
@@ -27,6 +31,8 @@ public class UI_InGame : UIBase
 		{
 			_playerNameText.text = NetworkManager.Instance.Self.name;
 			_opponentNameText.text = NetworkManager.Instance.Opponent.name;
+			_playerRateText.text = NetworkManager.Instance.Self.rate.ToString();
+			_opponentRateText.text = NetworkManager.Instance.Opponent.rate.ToString();
 		}
 		else
 		{

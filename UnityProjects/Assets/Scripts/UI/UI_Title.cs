@@ -55,11 +55,11 @@ public class UI_Title : UIBase
 			
 		var timeInfo = rankingInfo["time_attack"] as Dictionary<string, object>;
 		var timeRank = NetworkUtility.ObjectToInt(timeInfo["rank"]);
-		_timeRankText.text = timeRank.ToString()+"位";
+		_timeRankText.text = (timeRank+1).ToString()+"位";
 		
 		var rateInfo = rankingInfo["rate"] as Dictionary<string, object>;
 		var rateRank = NetworkUtility.ObjectToInt(rateInfo["rank"]);
-		_rateRankText.text = rateRank.ToString()+"位";
+		_rateRankText.text = (rateRank+1).ToString()+"位";
 	}
 	
 	public void SetInfo()
