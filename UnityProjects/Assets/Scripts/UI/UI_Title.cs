@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,11 +13,11 @@ public class UI_Title : UIBase
 	[SerializeField]
 	TextMeshProUGUI _rateRankText;
 	[SerializeField]
-	TextMeshProUGUI _timeText;
-	[SerializeField]
-	TextMeshProUGUI _timeRankText;
-	[SerializeField]
 	TextMeshProUGUI _volumeText;
+	[SerializeField]
+	Image _volumeOn;
+	[SerializeField]
+	Image _volumeOff;
 	
 	void OnEnable()
 	{
@@ -38,9 +39,7 @@ public class UI_Title : UIBase
 	
 	public void SetRank()
 	{
-		_timeText.text =  NetworkManager.Instance.Self.time_attack.ToString();
 		_rateText.text =  NetworkManager.Instance.Self.rate.ToString();
-		_timeRankText.text =  "??";
 		_rateRankText.text =  "??";
 		StartCoroutine(DisplayRanking());
 	}
@@ -53,13 +52,9 @@ public class UI_Title : UIBase
 		if(rankingInfo == null)
 			yield break;
 			
-		var timeInfo = rankingInfo["time_attack"] as Dictionary<string, object>;
-		var timeRank = NetworkUtility.ObjectToInt(timeInfo["rank"]);
-		_timeRankText.text = (timeRank+1).ToString()+"位";
-		
 		var rateInfo = rankingInfo["rate"] as Dictionary<string, object>;
 		var rateRank = NetworkUtility.ObjectToInt(rateInfo["rank"]);
-		_rateRankText.text = (rateRank+1).ToString()+"位";
+		_rateRankText.text = (rateRank+1).ToString();
 	}
 	
 	public void SetInfo()
@@ -72,5 +67,7 @@ public class UI_Title : UIBase
 	{
 		SoundManager.Instance.SwitchVolume();
 		_volumeText.text = SoundManager.Instance.IsEnabled ? "ON": "OFF";
+		_volumeOn.enabled = SoundManager.Instance.IsEnabled;
+		_volumeOff.enabled = SoundManager.Instance.IsEnabled == false;
 	}
 }

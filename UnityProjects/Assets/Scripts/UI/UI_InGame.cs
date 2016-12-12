@@ -7,6 +7,8 @@ public class UI_InGame : UIBase
 	[SerializeField]
 	Image _backgroundImage;
 	[SerializeField]
+	GameObject _vsInfo;
+	[SerializeField]
 	TextMeshProUGUI _playerNameText;
 	[SerializeField]
 	TextMeshProUGUI _opponentNameText;
@@ -15,7 +17,7 @@ public class UI_InGame : UIBase
 	[SerializeField]
 	TextMeshProUGUI _opponentRateText;
 	[SerializeField]
-	TextMeshProUGUI _countDownText;
+	Image[] _countDownImages;
 
 	TextMeshProUGUI[] _texts;
 
@@ -36,14 +38,21 @@ public class UI_InGame : UIBase
 		}
 		else
 		{
-			SetTextActive(false);
-			_countDownText.enabled = true;
+			SetVSActive(false);
+			foreach (var countDown in _countDownImages)
+			{
+				countDown.enabled = false;
+			}
 		}
 	}
 
 	public void SetCountDownText(int count)
 	{
-		_countDownText.text = count.ToString();
+		foreach (var countDown in _countDownImages)
+		{
+			countDown.enabled = false;
+		}
+		_countDownImages[count-1].enabled = true;
 	}
 
 	public void ShowStage()
@@ -54,14 +63,11 @@ public class UI_InGame : UIBase
 	void SetCountDownActive(bool value)
 	{
 		_backgroundImage.enabled = value;
-		SetTextActive(value);
+		SetVSActive(value);
 	}
 
-	void SetTextActive(bool value)
+	void SetVSActive(bool value)
 	{
-		foreach (var text in _texts)
-		{
-			text.enabled = value;
-		}
+		_vsInfo.SetActive(value);
 	}
 }

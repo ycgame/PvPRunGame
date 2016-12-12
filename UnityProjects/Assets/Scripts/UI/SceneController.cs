@@ -23,6 +23,7 @@ public class SceneController : MonoBehaviour
 		{
 			switch(_currentType)
 			{
+			case UIType.Loading:
 			case UIType.Titie:
 				Application.Quit();
 				break;
