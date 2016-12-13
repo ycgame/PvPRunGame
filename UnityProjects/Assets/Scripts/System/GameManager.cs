@@ -84,10 +84,11 @@ public class GameManager : MonoBehaviour
 		SceneController.Instance.Show(SceneController.UIType.InGame, true);
 		for (int c = count; c > 0; c--)
 		{
-			ui.SetCountDownText(c);
+			ui.SetCountDown(c);
 			SoundManager.Instance.PlaySE(SEType.CountDown);
 			yield return new WaitForSeconds(1f);
 		}
+		ui.HideCountDown();
 		ui.ShowStage();
 		_isPlaying = true;
 		SoundManager.Instance.PlayBGM(BGMType.InGame);

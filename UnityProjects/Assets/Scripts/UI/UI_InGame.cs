@@ -46,12 +46,17 @@ public class UI_InGame : UIBase
 		}
 	}
 
-	public void SetCountDownText(int count)
+	public void HideCountDown()
 	{
 		foreach (var countDown in _countDownImages)
 		{
 			countDown.enabled = false;
 		}
+	}
+
+	public void SetCountDown(int count)
+	{
+		HideCountDown();
 		_countDownImages[count-1].enabled = true;
 	}
 
