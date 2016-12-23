@@ -46,6 +46,7 @@ public class UI_Title : UIBase
 	
 	IEnumerator DisplayRanking()
 	{
+		_rateRankText.text = "通信中";
 		yield return NetworkManager.Instance.GetRankingInfo ();
 		
 		var rankingInfo = NetworkManager.Instance.RankingInfo;
