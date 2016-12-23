@@ -4,7 +4,7 @@ using TMPro;
 public class RankingInfo : MonoBehaviour 
 {
 	[SerializeField]
-	TextMeshProUGUI _rankText, _nameText, _valueText;
+	TextMeshProUGUI _rankText = null, _nameText = null, _valueText = null;
 
 	public void SetText(int rank, string name, int iVal) 
 	{

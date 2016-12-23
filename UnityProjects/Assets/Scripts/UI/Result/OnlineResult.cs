@@ -10,7 +10,7 @@ public class OnlineResult : MonoBehaviour
 	[SerializeField]
 	OnlineResultParts _LoseParts;
 	[SerializeField]
-	TextMeshProUGUI _factorText, _rateText, _rankingText;
+	TextMeshProUGUI _factorText = null, _rateText = null, _rankingText = null;
 	
 	public void ShowResult(OnlineResultArgs args)
 	{

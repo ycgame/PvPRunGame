@@ -7,4 +7,9 @@ public class UIBase : MonoBehaviour
 	{
 		gameObject.SetActive(value);
 	}
+
+	void OnDisable()
+	{
+		StopAllCoroutines();
+	}
 }

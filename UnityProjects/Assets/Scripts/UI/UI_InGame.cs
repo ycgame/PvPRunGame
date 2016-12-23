@@ -19,13 +19,6 @@ public class UI_InGame : UIBase
 	[SerializeField]
 	Image[] _countDownImages;
 
-	TextMeshProUGUI[] _texts;
-
-	void Awake()
-	{
-		_texts = GetComponentsInChildren<TextMeshProUGUI>();
-	}
-
 	void OnEnable()
 	{
 		SetCountDownActive(true);

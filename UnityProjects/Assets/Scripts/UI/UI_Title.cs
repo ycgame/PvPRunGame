@@ -40,13 +40,12 @@ public class UI_Title : UIBase
 	public void SetRank()
 	{
 		_rateText.text =  NetworkManager.Instance.Self.rate.ToString();
-		_rateRankText.text =  "??";
+		_rateRankText.text = "通信中";
 		StartCoroutine(DisplayRanking());
 	}
 	
 	IEnumerator DisplayRanking()
 	{
-		_rateRankText.text = "通信中";
 		yield return NetworkManager.Instance.GetRankingInfo ();
 		
 		var rankingInfo = NetworkManager.Instance.RankingInfo;
