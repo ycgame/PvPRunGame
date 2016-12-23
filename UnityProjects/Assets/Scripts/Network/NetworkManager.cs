@@ -63,6 +63,8 @@ public class NetworkManager : MonoBehaviour
 
 	IEnumerator Initialize()
 	{
+		yield return new WaitWhile(() => { return Application.internetReachability == NetworkReachability.NotReachable; });
+
 		if (SaveManager.ExistUser())
 		{
 			Self = SaveManager.LoadUser();
@@ -79,7 +81,6 @@ public class NetworkManager : MonoBehaviour
 		string subscribe = JsonUtility.ToJson (new Subscribe(), false);
 		Socket.Send(subscribe);
 
-		yield return new WaitWhile(() => { return Application.internetReachability == NetworkReachability.NotReachable; });
 		SceneController.Instance.Initialize();
 	}
 
