@@ -15,13 +15,13 @@ public class RankingInfo : MonoBehaviour
 	public void SetText(int rank, string name, float fVal)
 	{
 		SetRankAndNameText(rank, name);
-		_valueText.text = fVal.ToString();
+		_valueText.text = fVal.ToString("f3");
 	}
 
 
 	void SetRankAndNameText(int rank, string name)
 	{
-		_rankText.text = rank.ToString()+"位";
+		_rankText.text = rank.ToString();
 		_nameText.text = name;
 	}
 }

@@ -6,6 +6,10 @@ using System.Linq;
 public class UI_Ranking : UIBase
 {
 	[SerializeField]
+	GameObject _RateContents;
+	[SerializeField]
+	GameObject _TimeContents;
+	[SerializeField]
 	RatingRankList _rateRankInfoList;
 	[SerializeField]
 	TimeAttackRankList _timeRankInfoList;
@@ -13,10 +17,11 @@ public class UI_Ranking : UIBase
 	List<Dictionary<string, object>> _timeRank10 = new List<Dictionary<string, object>>(10);
 	int _rateRank;
 	List<Dictionary<string, object>> _rateRank10 = new List<Dictionary<string, object>>(10);
-	
+
 	void OnEnable()
 	{
 		StartCoroutine (DisplayRanking());
+		ShowRateContents();
 	}
 
 	void OnDisable()
@@ -43,6 +48,18 @@ public class UI_Ranking : UIBase
 
 		_timeRankInfoList.SetRankingInfo(_timeRank10);
 		_rateRankInfoList.SetRankingInfo(_rateRank10);
+	}
+
+	public void ShowRateContents()
+	{
+		_RateContents.SetActive(true);
+		_TimeContents.SetActive(false);
+	}
+
+	public void ShowTimeContents()
+	{
+		_TimeContents.SetActive(true);
+		_RateContents.SetActive(false);
 	}
 }
 	
