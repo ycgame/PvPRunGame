@@ -52,9 +52,12 @@ public class UI_Title : UIBase
 		if(rankingInfo == null)
 			yield break;
 			
+		var timeInfo = rankingInfo["time_attack"] as Dictionary<string, object>;
+		GameManager.Instance.TimeRanking = NetworkUtility.ObjectToInt(timeInfo["rank"]);
+
 		var rateInfo = rankingInfo["rate"] as Dictionary<string, object>;
-		var rateRank = NetworkUtility.ObjectToInt(rateInfo["rank"]);
-		_rateRankText.text = (rateRank+1).ToString();
+		GameManager.Instance.RateRanking = NetworkUtility.ObjectToInt(rateInfo["rank"]);
+		_rateRankText.text = (GameManager.Instance.RateRanking+1).ToString();
 	}
 	
 	public void SetInfo()

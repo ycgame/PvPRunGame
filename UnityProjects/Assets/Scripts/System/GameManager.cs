@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance { get; private set; }
 	public OnlineResultArgs OnlineArgs { get; set; }
 
+	public int RateRanking { get; set; }
+	public int TimeRanking { get; set; }
+
 	[SerializeField]
     Transform _player = null, _opponent = null;
 	[SerializeField]
