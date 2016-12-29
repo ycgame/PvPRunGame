@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
 	[SerializeField]
     Transform _player = null, _opponent = null;
-	[SerializeField]
-	DiffImage _diffImage;
 	public bool IsNetwork { get; private set; }
     bool _isPlaying;
     float _elapsedTime;
@@ -66,8 +64,6 @@ public class GameManager : MonoBehaviour
 		_opponent.localPosition = Vector3.zero;
 		_player.localScale = _tileManager.CalcTileScale();
 		_opponent.localScale = _tileManager.CalcTileScale();
-		_diffImage.SetScale(_tileManager.CalcTileScale());
-		_diffImage.SetActive(false);
 		AdManager.Instance.Hide();
 
 		Camera.main.transform.position = 10f * Vector3.back;
@@ -194,8 +190,6 @@ public class GameManager : MonoBehaviour
 			
 		int diff = _playerStepCnt - _opponentStepCnt;
 		var _opponentRenderer = _opponent.GetComponentInChildren<SpriteRenderer>();
-		_diffImage.SetActive(_opponentRenderer.isVisible == false);
-		_diffImage.SetImage(_tileManager.CalcTilePosition(step, 0).x, diff);
 	}
 
 	//通信相手からのステップメッセージ来たとき
