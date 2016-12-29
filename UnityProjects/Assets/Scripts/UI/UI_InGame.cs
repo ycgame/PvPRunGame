@@ -7,6 +7,8 @@ public class UI_InGame : UIBase
 	[SerializeField]
 	Image _backgroundImage;
 	[SerializeField]
+	Image _failRedImage;
+	[SerializeField]
 	GameObject _vsInfo;
 	[SerializeField]
 	TextMeshProUGUI _playerNameText;
@@ -56,6 +58,11 @@ public class UI_InGame : UIBase
 	public void ShowStage()
 	{
 		SetCountDownActive(false);
+	}
+
+	public void SetFailImageActive(bool value)
+	{
+		_failRedImage.enabled = value;
 	}
 
 	void SetCountDownActive(bool value)

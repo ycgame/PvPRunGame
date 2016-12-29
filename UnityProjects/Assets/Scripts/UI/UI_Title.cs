@@ -18,6 +18,11 @@ public class UI_Title : UIBase
 	Image _volumeOn;
 	[SerializeField]
 	Image _volumeOff;
+
+	void Start()
+	{
+		SetVolumeButton();
+	}
 	
 	void OnEnable()
 	{
@@ -69,6 +74,11 @@ public class UI_Title : UIBase
 	public void OnVolume()
 	{
 		SoundManager.Instance.SwitchVolume();
+		SetVolumeButton();
+	}
+
+	void SetVolumeButton()
+	{
 		_volumeText.text = SoundManager.Instance.IsEnabled ? "ON": "OFF";
 		_volumeOn.enabled = SoundManager.Instance.IsEnabled;
 		_volumeOff.enabled = SoundManager.Instance.IsEnabled == false;

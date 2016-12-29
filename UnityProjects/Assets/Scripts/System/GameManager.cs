@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
 	public int RateRanking { get; set; }
 	public int TimeRanking { get; set; }
+	private bool IsNewScore { get; set; }
 
 	[SerializeField]
     Transform _player = null, _opponent = null;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
 	{
 		SoundManager.Instance.StopBGM();
 		var ui = SceneController.Instance.GetUI<UI_InGame>(SceneController.UIType.InGame);
+		ui.SetFailImageActive(false);
 		SceneController.Instance.Show(SceneController.UIType.InGame, true);
 		for (int c = count; c > 0; c--)
 		{
@@ -204,6 +206,8 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.StopBGM();
 		_isPlaying = false;
 		StartCoroutine(FinishCoroutine(winner));
+		var ui = SceneController.Instance.GetUI<UI_InGame>(SceneController.UIType.InGame);
+		ui.SetFailImageActive(winner == PlayerType.Opponent);
 		AdManager.Instance.Show();
 	}
 
@@ -223,6 +227,7 @@ public class GameManager : MonoBehaviour
 			{
 				success = winner == PlayerType.Player,
 				time = _elapsedTime,
+				newScore = IsNewScore,
 			});
 		}
 		yield return new WaitForSeconds(1.5f);
@@ -248,7 +253,8 @@ public class GameManager : MonoBehaviour
 		SoundManager.Instance.PlaySE(SEType.CorrectTap);
 		if (IsNetwork == false)
 		{
-			if (NetworkManager.Instance.Self.time_attack > _elapsedTime) 
+			IsNewScore = NetworkManager.Instance.Self.time_attack > _elapsedTime;
+			if (IsNewScore) 
 			{
 				NetworkManager.Instance.Self.time_attack = _elapsedTime;
 				StartCoroutine(NetworkManager.Instance.TimeUpdatePost(_elapsedTime));

@@ -3,6 +3,8 @@ using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
+	public static readonly string KEY_MUTE = "IsMute";
+
 	public static SoundManager Instance { get; private set; }
 	public bool IsEnabled { get; private set; }
 
@@ -23,7 +25,14 @@ public class SoundManager : MonoBehaviour
 		Instance = this;
 		_defaultBGMVolume = _bgmSource.volume;
 		_defaultSEVolume = _seSource.volume;
-		IsEnabled = true;
+		if (PlayerPrefs.GetInt(KEY_MUTE) == 1)
+		{
+			Off();
+		}
+		else
+		{
+			On();
+		}
 	}
 
 	public void PlayBGM(BGMType type)
@@ -45,6 +54,8 @@ public class SoundManager : MonoBehaviour
 
 	public void On()
 	{
+		PlayerPrefs.SetInt(KEY_MUTE, 0);
+		PlayerPrefs.Save();
 		_bgmSource.volume = _defaultBGMVolume;
 		_seSource.volume = _defaultSEVolume;
 		IsEnabled = true;
@@ -52,6 +63,8 @@ public class SoundManager : MonoBehaviour
 	
 	public void Off()
 	{
+		PlayerPrefs.SetInt(KEY_MUTE, 1);
+		PlayerPrefs.Save();
 		_bgmSource.volume = 0f;
 		_seSource.volume = 0f;
 		IsEnabled = false;
