@@ -105,7 +105,8 @@ public class NetworkManager : MonoBehaviour
 		WWW www = new WWW(url);
 		yield return www;
 
-		if (www.error == null) {
+		if (www.error == null)
+		{
 			var json = www.text;
 			RankingInfo = NetworkUtility.FromJson (json) as Dictionary<string, object>;
 		}

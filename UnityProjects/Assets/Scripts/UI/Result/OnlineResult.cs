@@ -59,6 +59,7 @@ public class OnlineResult : MonoBehaviour
 		{
 			parts.SetRankUpActive(rateRank > GameManager.Instance.RateRanking);
 		}
+		GameManager.Instance.RateRanking = rateRank;
 	}
 }
 

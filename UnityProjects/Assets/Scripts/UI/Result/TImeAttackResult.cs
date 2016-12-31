@@ -42,6 +42,8 @@ public class TImeAttackResult : MonoBehaviour
 	IEnumerator DisplayRanking(TimeAttackResultArgs args)
 	{
 		_rankingText.text = "通信中";
+		_rankupImage.enabled = false;
+		_newScoreImage.enabled = false;
 		yield return NetworkManager.Instance.GetRankingInfo ();
 		var rankingInfo = NetworkManager.Instance.RankingInfo;
 		if(rankingInfo == null)
@@ -55,6 +57,7 @@ public class TImeAttackResult : MonoBehaviour
 		{
 			_rankupImage.enabled = timeRank < GameManager.Instance.TimeRanking;
 		}
+		GameManager.Instance.TimeRanking = timeRank;
 	}
 }
 
