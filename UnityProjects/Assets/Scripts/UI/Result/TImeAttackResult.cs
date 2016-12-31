@@ -9,6 +9,8 @@ public class TImeAttackResult : MonoBehaviour
 	[SerializeField]
 	TextMeshProUGUI _clearTimeText;
 	[SerializeField]
+	TextMeshProUGUI _bestTimeText;
+	[SerializeField]
 	TextMeshProUGUI _rankingText;
 	[SerializeField]
 	Image _newScoreImage;
@@ -25,14 +27,15 @@ public class TImeAttackResult : MonoBehaviour
 		{
 			_SuccessRoot.SetActive(true);
 			_FailedRoot.SetActive(false);
-			_clearTimeText.text = args.time.ToString();
+			_clearTimeText.text = args.time.ToString("f3");
 		}
 		else
 		{
 			_SuccessRoot.SetActive(false);
 			_FailedRoot.SetActive(true);
-			_clearTimeText.text = "miss";
+			_clearTimeText.text = "----";
 		}
+		_bestTimeText.text = NetworkManager.Instance.Self.time_attack.ToString("f3");
 		StartCoroutine(DisplayRanking(args));
 	}
 
