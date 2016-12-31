@@ -26,6 +26,8 @@ public class TileManager : MonoBehaviour
 	private GameObject _afterTilePrefab;
 	[SerializeField]
 	private GameObject _failTilePrefab;
+	[SerializeField]
+	private GameObject _goalTextObject;
 	private float _tileHeight;
 	private float _tileWidth;
 
@@ -80,6 +82,9 @@ public class TileManager : MonoBehaviour
 				}
 			}
 		}
+		var pos = _goalTextObject.transform.position;
+		pos.y = CalcTilePosition(0, _length).y;
+		_goalTextObject.transform.position = pos;
 		_failTileObject.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 	}
 
