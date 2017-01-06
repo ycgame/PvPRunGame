@@ -116,7 +116,7 @@ public class SceneController : MonoBehaviour
 
 	IEnumerator RequestAI()
 	{
-		yield return new WaitForSeconds(10f);
+		yield return new WaitForSeconds(5f);
 		yield return NetworkManager.Instance.AIRequestPost();
 	}
 
