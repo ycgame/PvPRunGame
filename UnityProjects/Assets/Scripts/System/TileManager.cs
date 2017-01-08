@@ -85,6 +85,7 @@ public class TileManager : MonoBehaviour
 		var pos = _goalTextObject.transform.position;
 		pos.y = CalcTilePosition(0, _length).y;
 		_goalTextObject.transform.position = pos;
+		_goalTextObject.gameObject.SetActive(false);
 		_failTileObject.transform.localScale = new Vector3(_tileWidth, _tileHeight, 1);
 	}
 
@@ -142,6 +143,7 @@ public class TileManager : MonoBehaviour
 			if (_currentIndex == _length)
 			{
 				result.type = TapResult.Type.Clear;
+				_goalTextObject.gameObject.SetActive(true);
 			}
 			else
 			{
