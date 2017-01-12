@@ -33,7 +33,7 @@ public class TImeAttackResult : MonoBehaviour
 		{
 			_SuccessRoot.SetActive(false);
 			_FailedRoot.SetActive(true);
-			_clearTimeText.text = "----";
+			_clearTimeText.text = "";
 		}
 		_bestTimeText.text = NetworkManager.Instance.Self.time_attack.ToString("f3");
 		StartCoroutine(DisplayRanking(args));
