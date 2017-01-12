@@ -174,6 +174,15 @@ public class NetworkManager : MonoBehaviour
 		Socket.Close();
 		Socket = null;
 	}
+
+	void OnApplicationPause (bool pauseStatus)
+    {
+        if (pauseStatus == false)
+		{
+			string subscribe = JsonUtility.ToJson (new Subscribe(), false);
+			Socket.Send(subscribe);
+        }
+    }
 }
 
 public class UserInfo
